@@ -1,0 +1,12 @@
+# Keep Azure Web App deployment focused on website runtime files.
+android-app/
+.azure/
+app_logs*/
+*.apk
+*.zip
+*.txt
+hotfix_deploy/
+deploy/
+deploy_site/
+uploads/
+media/

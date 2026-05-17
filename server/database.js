@@ -1,18 +1,29 @@
 const fs = require('fs');
 const path = require('path');
 const azureStateStore = require('./azureStateStore');
+const { APP_DATA_ROOT } = require('./runtimePaths');
 
-const DB_FILE = path.join(__dirname, 'data.json');
-const DB_BACKUP_FILE = path.join(__dirname, 'data.backup.json');
-const DB_TMP_FILE = path.join(__dirname, 'data.tmp.json');
-const SNAPSHOTS_DIR = path.join(__dirname, 'snapshots');
+const DATA_ROOT = APP_DATA_ROOT;
+const DB_FILE = path.join(DATA_ROOT, 'data.json');
+const DB_BACKUP_FILE = path.join(DATA_ROOT, 'data.backup.json');
+const DB_TMP_FILE = path.join(DATA_ROOT, 'data.tmp.json');
+const SNAPSHOTS_DIR = path.join(DATA_ROOT, 'snapshots');
 const SNAPSHOT_RETENTION = 24;
 const SNAPSHOT_MIN_INTERVAL_MS = 10 * 60 * 1000;
-const UPLOADS_DIR = path.join(__dirname, 'uploads');
+const UPLOADS_DIR = path.join(DATA_ROOT, 'uploads');
 let lastSnapshotAt = 0;
 
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-if (!fs.existsSync(SNAPSHOTS_DIR)) fs.mkdirSync(SNAPSHOTS_DIR, { recursive: true });
+function ensureDir(dirPath) {
+  try {
+    if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+  } catch (error) {
+    console.error(`Failed to create ${dirPath}:`, error.message);
+  }
+}
+
+ensureDir(DATA_ROOT);
+ensureDir(UPLOADS_DIR);
+ensureDir(SNAPSHOTS_DIR);
 
 const defaultData = {
   users: [], leagues: [], sponsors: [], teams: [], players: [],
@@ -663,29 +674,12 @@ const db = {
       return { error: 'Only upcoming matches can be started' };
     }
 
-    const rawDate = String(match.date || '').trim();
-    const rawTime = String(match.time || '').trim();
-    if (rawDate) {
-      let scheduledAt = null;
-      if (rawTime) {
-        // Expecting HH:mm; seconds are optional.
-        const normalizedTime = /^\d{2}:\d{2}$/.test(rawTime) ? `${rawTime}:00` : rawTime;
-        scheduledAt = new Date(`${rawDate}T${normalizedTime}`);
-      } else {
-        scheduledAt = new Date(`${rawDate}T00:00:00`);
-      }
-
-      if (!Number.isNaN(scheduledAt.getTime()) && new Date() < scheduledAt) {
-        const whenText = rawTime ? `${rawDate} ${rawTime}` : rawDate;
-        return { error: `Match cannot start before scheduled time (${whenText})` };
-      }
-    }
-
     let battingTeamId = initConfig.batting_team_id;
     let bowlingTeamId = initConfig.bowling_team_id;
     let strikerId = initConfig.striker_id;
     let nonStrikerId = initConfig.non_striker_id;
     let bowlerId = initConfig.bowler_id;
+    let needsOpeningSelection = false;
 
     // Backward compatibility: old start flow with toss winner + decision.
     if (!battingTeamId || !bowlingTeamId) {
@@ -701,25 +695,28 @@ const db = {
         bowlingTeamId = tossWinnerId;
         battingTeamId = tossWinnerId === match.team_a_id ? match.team_b_id : match.team_a_id;
       }
-      const battingPlayers = data.players.filter((p) => p.team_id === battingTeamId);
-      const bowlingPlayers = data.players.filter((p) => p.team_id === bowlingTeamId);
-      strikerId = battingPlayers[0]?.id;
-      nonStrikerId = battingPlayers[1]?.id;
-      bowlerId = bowlingPlayers[0]?.id;
+      needsOpeningSelection = true;
+      strikerId = null;
+      nonStrikerId = null;
+      bowlerId = null;
     }
 
     if (!battingTeamId || !bowlingTeamId || battingTeamId === bowlingTeamId) return { error: 'Select valid batting and bowling teams' };
-    if (!strikerId || !nonStrikerId || strikerId === nonStrikerId) return { error: 'Select two different opening batsmen' };
-    if (!bowlerId) return { error: 'Select opening bowler' };
+    if (!needsOpeningSelection) {
+      if (!strikerId || !nonStrikerId || strikerId === nonStrikerId) return { error: 'Select two different opening batsmen' };
+      if (!bowlerId) return { error: 'Select opening bowler' };
+    }
 
-    const battingPlayers = data.players.filter((p) => p.team_id === battingTeamId);
-    const bowlingPlayers = data.players.filter((p) => p.team_id === bowlingTeamId);
-    if (!battingPlayers.find((p) => p.id === strikerId) || !battingPlayers.find((p) => p.id === nonStrikerId)) return { error: 'Opening batsmen must belong to batting team' };
-    if (!bowlingPlayers.find((p) => p.id === bowlerId)) return { error: 'Opening bowler must belong to bowling team' };
+    if (!needsOpeningSelection) {
+      const battingPlayers = data.players.filter((p) => p.team_id === battingTeamId);
+      const bowlingPlayers = data.players.filter((p) => p.team_id === bowlingTeamId);
+      if (!battingPlayers.find((p) => p.id === strikerId) || !battingPlayers.find((p) => p.id === nonStrikerId)) return { error: 'Opening batsmen must belong to batting team' };
+      if (!bowlingPlayers.find((p) => p.id === bowlerId)) return { error: 'Opening bowler must belong to bowling team' };
+    }
 
     match.status = 'live';
     const inningsId = nextId(data, 'innings');
-    data.innings.push({ id: inningsId, match_id: matchId, batting_team_id: battingTeamId, bowling_team_id: bowlingTeamId, innings_number: 1, total_runs: 0, total_wickets: 0, total_overs: 0, total_balls: 0, extras_wides: 0, extras_noballs: 0, extras_byes: 0, extras_legbyes: 0, is_completed: 0, striker_id: strikerId, non_striker_id: nonStrikerId, current_bowler_id: bowlerId, last_over_bowler_id: null });
+    data.innings.push({ id: inningsId, match_id: matchId, batting_team_id: battingTeamId, bowling_team_id: bowlingTeamId, innings_number: 1, total_runs: 0, total_wickets: 0, total_overs: 0, total_balls: 0, extras_wides: 0, extras_noballs: 0, extras_byes: 0, extras_legbyes: 0, is_completed: 0, striker_id: strikerId || null, non_striker_id: nonStrikerId || null, current_bowler_id: bowlerId || null, last_over_bowler_id: null });
     const league = data.leagues.find(l => l.id === match.league_id);
     if (league) league.status = 'active';
     saveDB(data);

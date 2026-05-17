@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const API = '/api'
+const API = (() => {
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+  if (!raw.startsWith('http')) return raw
+  return raw.endsWith('/api') ? raw : `${raw}/api`
+})()
 
 export default function HomePage() {
   const [stats, setStats]             = useState({ leagues: 0, teams: 0, matches: 0, players: 0 })

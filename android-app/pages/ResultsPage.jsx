@@ -1,40 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-const API = '/api'
+import { useDataStore } from '../context/DataStore'
+import LazyImage from '../components/LazyImage'
+import { handleBannerTap } from '../utils/media'
 
 export default function ResultsPage() {
-  const [leagues, setLeagues] = useState([])
+  const { leagues, results, isRefreshing } = useDataStore()
+  const loading = isRefreshing && results.length === 0
   const [selectedLeague, setSelectedLeague] = useState('all')
-  const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(true)
   const [missingBanners, setMissingBanners] = useState({})
-
-  useEffect(() => {
-    fetch(`${API}/leagues`).then(r => r.json()).then(ls => { setLeagues(Array.isArray(ls) ? ls : []) }).catch(() => {})
-    fetch(`${API}/matches/completed/all`).then(r => r.json()).then(d => { setResults(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
-  }, [])
 
   const shownResults = selectedLeague === 'all'
     ? results
     : results.filter(m => String(m.league_id) === String(selectedLeague))
 
   const markMissing = (key) => setMissingBanners((prev) => ({ ...prev, [key]: true }))
-  const onBannerTap = (src, fileName) => {
-    if (!src) return
-    const shouldDownload = window.confirm('Download this banner?')
-    if (shouldDownload) {
-      const link = document.createElement('a')
-      link.href = src
-      link.download = fileName || 'banner.png'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      return
-    }
-    window.open(src, '_blank', 'noopener,noreferrer')
-  }
-
   return (
     <div className="page" style={{ paddingBottom: 80 }}>
       <div className="sect-head"><h3>🏅 Results</h3></div>
@@ -58,7 +38,7 @@ export default function ResultsPage() {
               : (!resultMissing ? `/media/banners/results/result_banner_${m.id}.png` : null)
             if (!src) return null
             return (
-              <img
+              <LazyImage
                 src={src}
                 alt={`${m.team_a_name} vs ${m.team_b_name} summary`}
                 style={{ width: '100%', height: 118, objectFit: 'cover', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
@@ -68,7 +48,7 @@ export default function ResultsPage() {
                 }}
                 onClick={(e) => {
                   e.preventDefault()
-                  onBannerTap(src, src.split('/').pop())
+                  handleBannerTap(src, src.split('/').pop())
                 }}
               />
             )
@@ -84,6 +64,36 @@ export default function ResultsPage() {
               <div className="fixture-team">{m.team_b_name}</div>
             </div>
             {m.result_summary && <div className="result-summary" style={{ textAlign: 'center' }}>{m.result_summary}</div>}
+            {Array.isArray(m.innings) && m.innings.length > 0 && (
+              <div style={{ marginTop: 8, display: 'grid', gap: 6 }}>
+                {(() => {
+                  const innings = m.innings.slice(0, 2)
+                  const topRuns = Math.max(1, ...innings.map((inn) => Number(inn.total_runs || 0)))
+                  const firstRuns = Number(innings[0]?.total_runs || 0)
+                  return innings.map((inn, idx) => {
+                    const runs = Number(inn.total_runs || 0)
+                    const wickets = Number(inn.total_wickets || 0)
+                    const balls = Number(inn.total_balls || 0)
+                    const label = idx === 0 ? '1st Innings' : '2nd Innings Chase'
+                    const chaseNeed = idx === 1 ? Math.max(0, firstRuns + 1 - runs) : null
+                    return (
+                      <div key={`${m.id}_${inn.id || idx}`} style={{ display: 'grid', gridTemplateColumns: '88px 1fr 70px', gap: 6, alignItems: 'center' }}>
+                        <div style={{ fontSize: '.62rem', color: 'var(--t2)', fontWeight: 700 }}>{label}</div>
+                        <div style={{ height: 10, borderRadius: 999, background: 'var(--glass-bg)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${Math.max(8, (runs / topRuns) * 100)}%`, background: idx === 0 ? 'linear-gradient(90deg,#40c4ff,#00e896)' : 'linear-gradient(90deg,#f7c948,#ff8c42)' }} />
+                        </div>
+                        <div style={{ fontSize: '.66rem', color: 'var(--t1)', fontFamily: 'var(--font-mono)', textAlign: 'right' }}>{runs}/{wickets}</div>
+                        {idx === 1 && chaseNeed !== null && (
+                          <div style={{ gridColumn: '1 / -1', fontSize: '.62rem', color: chaseNeed === 0 ? 'var(--accent)' : 'var(--gold)', textAlign: 'right' }}>
+                            {chaseNeed === 0 ? 'Chase completed' : `Need ${chaseNeed} to win`} • Overs {Math.floor(balls / 6)}.{balls % 6}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })
+                })()}
+              </div>
+            )}
             {m.mom_name && <div style={{ textAlign: 'center', fontSize: '0.72rem', color: 'var(--gold)', paddingTop: 4 }}>⭐ MOM: {m.mom_name}</div>}
           </div>
         </Link>

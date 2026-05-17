@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CricketHub</string>
+    <string name="title_activity_main">CricketHub</string>
+    <string name="package_name">com.crickethub.app</string>
+    <string name="custom_url_scheme">com.crickethub.app</string>
+</resources>

@@ -9,21 +9,28 @@ import GraphicsGeneratorPanel, {
   generateVsBannerForMatch,
   generateInningsBannerForMatch,
   generateResultBannerForMatch,
+  generateMatchWinnerBannerForMatch,
   generateSummaryBannerForMatch,
+  generateLeagueWinnerBannerForLeague,
 } from '../components/GraphicsGeneratorPanel'
 
 const API = (() => {
-  const raw = (import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || 'https://crickethub.azurewebsites.net/api').replace(/\/$/, '')
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
   if (!raw.startsWith('http')) return raw
   return raw.endsWith('/api') ? raw : `${raw}/api`
 })()
-const API_FALLBACK = 'https://crickethub.azurewebsites.net/api'
+const API_FALLBACK = (() => {
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_FALLBACK_URL || '').replace(/\/$/, '')
+  if (!raw) return ''
+  if (!raw.startsWith('http')) return raw
+  return raw.endsWith('/api') ? raw : `${raw}/api`
+})()
 
 function buildApiUrls(path) {
   const cleanPath = String(path || '').startsWith('/') ? path : `/${path}`
   const primary = `${API}${cleanPath}`
   const urls = [primary]
-  if (API.startsWith('/') || !API.includes('crickethub.azurewebsites.net')) {
+  if (API_FALLBACK && API_FALLBACK !== API) {
     urls.push(`${API_FALLBACK}${cleanPath}`)
   }
   return [...new Set(urls)]
@@ -248,6 +255,7 @@ export default function AdminPanel() {
   const [showModal, setShowModal] = useState(null)
   const [showInlineLeagueForm, setShowInlineLeagueForm] = useState(false)
   const [showInlineTeamForm, setShowInlineTeamForm] = useState(false)
+  const [showInlineAddPlayerForm, setShowInlineAddPlayerForm] = useState(false)
   const [editMatch, setEditMatch] = useState(null)
   const [editMatchDraft, setEditMatchDraft] = useState({
     date: '',
@@ -264,13 +272,12 @@ export default function AdminPanel() {
   const [inlineEditLeagueId, setInlineEditLeagueId] = useState(null)
   const [inlineLeagueDraft, setInlineLeagueDraft] = useState({ ...createEmptyLeagueForm() })
   const [inlineLeagueLogo, setInlineLeagueLogo] = useState(null)
+  const [inlineLeagueSponsors, setInlineLeagueSponsors] = useState([{ name: '', logo: null }, { name: '', logo: null }])
   const [sponsorInputs, setSponsorInputs] = useState([{ name: '', logo: null }, { name: '', logo: null }])
   const [generatedLeagueBanner, setGeneratedLeagueBanner] = useState(null)
 
   const [playerForm, setPlayerForm] = useState({ name: '', role: 'batsman', jersey_number: '' })
   const [playerPhoto, setPlayerPhoto] = useState(null)
-  const [editPlayerForm, setEditPlayerForm] = useState({ id: null, name: '', role: 'batsman', jersey_number: '' })
-  const [editPlayerPhoto, setEditPlayerPhoto] = useState(null)
   const [inlineEditPlayerId, setInlineEditPlayerId] = useState(null)
   const [inlinePlayerDraft, setInlinePlayerDraft] = useState({ name: '', role: 'batsman', jersey_number: '' })
   const [inlinePlayerPhoto, setInlinePlayerPhoto] = useState(null)
@@ -301,9 +308,15 @@ export default function AdminPanel() {
     match_gap_days: 0,
     venue: '',
     auto_generate_vs: true,
+    auto_generate_vs_icc: false,
   })
   const [fixtureDrafts, setFixtureDrafts] = useState([])
   const [dataError, setDataError] = useState('')
+  const [showInlineFixtureSetup, setShowInlineFixtureSetup] = useState(false)
+  const [inlineTossMatchId, setInlineTossMatchId] = useState(null)
+  const [inlineTossWinnerId, setInlineTossWinnerId] = useState('')
+  const [inlineTossDecision, setInlineTossDecision] = useState('')
+  const [startMatchBusyId, setStartMatchBusyId] = useState(null)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -443,6 +456,16 @@ export default function AdminPanel() {
   const handleLeagueBanner = (league) =>
     withBanner(`league_${league.id}`, () => generateLeagueBannerForLeague(league.id))
 
+  const handleLeagueWinnerBanner = (league) =>
+    withBanner(`league_winner_${league.id}`, async () => {
+      const leagueMatches = await apiJson(`/leagues/${league.id}/matches`).catch(() => [])
+      const fullyCompleted = Array.isArray(leagueMatches)
+        && leagueMatches.length > 0
+        && leagueMatches.every((m) => m.status === 'completed' || !!m.result_summary)
+      if (!fullyCompleted) throw new Error('League winner banner is available only after all league matches are completed.')
+      return generateLeagueWinnerBannerForLeague(league.id)
+    })
+
   const handleSquadBanner = (team) =>
     withBanner(`squad_${team.id}`, () => generateSquadBannerForTeam(team.id))
 
@@ -452,6 +475,11 @@ export default function AdminPanel() {
   const handleVsBanner = (match) => {
     const leagueObj = leagues.find(l => String(l.id) === String(selectedLeague))
     withBanner(`vs_${match.id}`, () => generateVsBannerForMatch(match, leagueObj))
+  }
+
+  const handleIccVsBanner = (match) => {
+    const leagueObj = leagues.find(l => String(l.id) === String(selectedLeague))
+    withBanner(`vs_icc_${match.id}`, () => generateVsBannerForMatch(match, leagueObj, { theme: 'icc' }))
   }
 
   const handleInningsBanner = (match, type) =>
@@ -472,6 +500,20 @@ export default function AdminPanel() {
       return generateResultBannerForMatch(m, sc)
     })
 
+  const handleMatchWinnerBanner = (match) =>
+    withBanner(`winner_${match.id}`, async () => {
+      const [m, sc] = await Promise.all([
+        apiJson(`/matches/${match.id}`),
+        apiJson(`/matches/${match.id}/scorecard`),
+      ])
+      let league = null
+      try {
+        const lid = m.league_id || match.league_id
+        if (lid) league = await apiJson(`/leagues/${lid}`)
+      } catch (_) {}
+      return generateMatchWinnerBannerForMatch(m, sc, league)
+    })
+
   const handleSummaryBanner = (match) =>
     withBanner(`summary_${match.id}`, async () => {
       const [m, sc] = await Promise.all([
@@ -485,6 +527,17 @@ export default function AdminPanel() {
       } catch (_) {}
       return generateSummaryBannerForMatch(m, sc, league)
     })
+
+  const refreshVsBannersForTeam = async (teamId) => {
+    const relatedMatches = matches.filter((m) => String(m.team_a_id) === String(teamId) || String(m.team_b_id) === String(teamId))
+    if (!relatedMatches.length) return
+    const leagueObj = leagues.find((l) => String(l.id) === String(selectedLeague)) || null
+
+    for (const m of relatedMatches) {
+      await generateVsBannerForMatch(m, leagueObj, { download: false })
+      await generateVsBannerForMatch(m, leagueObj, { theme: 'icc', download: false })
+    }
+  }
 
   // ── Legacy squad banner (from Squads tab) ──
   const [isGeneratingSquadBanner, setIsGeneratingSquadBanner] = useState(false)
@@ -545,12 +598,18 @@ export default function AdminPanel() {
       overs_per_innings: parseInt(league.overs_per_innings, 10) || 20,
       status: league.status || 'upcoming',
     })
+    const existingSponsors = Array.isArray(league?.sponsors) ? league.sponsors : []
+    setInlineLeagueSponsors([
+      { name: existingSponsors[0]?.name || '', logo: null },
+      { name: existingSponsors[1]?.name || '', logo: null },
+    ])
     setInlineLeagueLogo(null)
   }
 
   const cancelInlineLeagueEdit = () => {
     setInlineEditLeagueId(null)
     setInlineLeagueDraft({ ...createEmptyLeagueForm() })
+    setInlineLeagueSponsors([{ name: '', logo: null }, { name: '', logo: null }])
     setInlineLeagueLogo(null)
   }
 
@@ -572,6 +631,14 @@ export default function AdminPanel() {
       const payload = await res.json().catch(() => ({}))
       alert(payload.error || 'Failed to update league')
       return
+    }
+
+    const validSponsors = inlineLeagueSponsors.filter((s) => String(s.name || '').trim())
+    for (const sponsor of validSponsors) {
+      const sfd = new FormData()
+      sfd.append('name', sponsor.name.trim())
+      if (sponsor.logo) sfd.append('logo', sponsor.logo)
+      await postFormSafe(`/leagues/${leagueId}/sponsors`, sfd, 'POST')
     }
 
     cancelInlineLeagueEdit()
@@ -674,23 +741,10 @@ export default function AdminPanel() {
     if (playerPhoto) fd.append('photo', playerPhoto)
     const res = await postFormSafe('/players', fd, 'POST')
     if (!(await ensureOk(res, 'Failed to add player'))) return
-    setPlayerForm({ name: '', role: 'batsman', jersey_number: '' }); setPlayerPhoto(null); loadPlayers()
-  }
-
-  const openEditPlayerModal = (player) => {
-    setEditPlayerForm({ id: player.id, name: player.name || '', role: player.role || 'batsman', jersey_number: player.jersey_number || '' })
-    setEditPlayerPhoto(null); setShowModal('editPlayer')
-  }
-
-  const updatePlayer = async (e) => {
-    e.preventDefault()
-    if (!editPlayerForm.id) return
-    const fd = new FormData()
-    fd.append('name', editPlayerForm.name); fd.append('role', editPlayerForm.role); fd.append('jersey_number', editPlayerForm.jersey_number)
-    if (editPlayerPhoto) fd.append('photo', editPlayerPhoto)
-    const res = await postFormSafe(`/players/${editPlayerForm.id}`, fd, 'PUT')
-    if (!(await ensureOk(res, 'Failed to update player'))) return
-    setShowModal(null); setEditPlayerForm({ id: null, name: '', role: 'batsman', jersey_number: '' }); setEditPlayerPhoto(null); loadPlayers()
+    setPlayerForm({ name: '', role: 'batsman', jersey_number: '' }); setPlayerPhoto(null)
+    await loadPlayers()
+    await refreshVsBannersForTeam(selectedTeam)
+    showToast('Player saved and VS banners refreshed')
   }
 
   const startInlinePlayerEdit = (player) => {
@@ -709,7 +763,10 @@ export default function AdminPanel() {
     if (inlinePlayerPhoto) fd.append('photo', inlinePlayerPhoto)
     const res = await postFormSafe(`/players/${playerId}`, fd, 'PUT')
     if (!(await ensureOk(res, 'Failed to update player'))) return
-    cancelInlinePlayerEdit(); loadPlayers()
+    cancelInlinePlayerEdit()
+    await loadPlayers()
+    await refreshVsBannersForTeam(selectedTeam)
+    showToast('Player updated and VS banners refreshed')
   }
   const deletePlayer = async (id) => { await apiCall(`/players/${id}`, { method: 'DELETE' }); loadPlayers() }
 
@@ -806,10 +863,18 @@ export default function AdminPanel() {
         }
       }
 
+      if (fixtureForm.auto_generate_vs_icc && Array.isArray(data.matches) && data.matches.length > 0) {
+        const leagueObj = leagues.find((l) => String(l.id) === String(selectedLeague)) || null
+        for (let i = 0; i < data.matches.length; i++) {
+          if (!fixtureDrafts[i]) continue
+          await generateVsBannerForMatch(data.matches[i], leagueObj, { theme: 'icc' })
+        }
+      }
+
       await loadMatches()
-      setShowModal(null)
+      setShowInlineFixtureSetup(false)
       setFixtureDrafts([])
-      showToast(`Fixtures generated${fixtureForm.auto_generate_vs ? ' + VS banners created' : ''}`)
+      showToast(`Fixtures generated${fixtureForm.auto_generate_vs || fixtureForm.auto_generate_vs_icc ? ' + banners created' : ''}`)
     } catch (err) {
       alert(err.message || 'Failed to generate fixtures')
     } finally {
@@ -875,35 +940,45 @@ export default function AdminPanel() {
     })
   }
 
-  const canStartScheduledMatch = (match) => {
-    if (!match?.date) return true
-    const rawDate = String(match.date).trim()
-    const rawTime = String(match.time || '').trim()
-    const scheduled = new Date(rawTime ? `${rawDate}T${rawTime}` : `${rawDate}T00:00:00`)
-    if (Number.isNaN(scheduled.getTime())) return true
-    return new Date() >= scheduled
+  const openInlineTossSetup = (match) => {
+    setInlineTossMatchId(match.id)
+    setInlineTossWinnerId('')
+    setInlineTossDecision('')
+  }
+
+  const cancelInlineTossSetup = () => {
+    setInlineTossMatchId(null)
+    setInlineTossWinnerId('')
+    setInlineTossDecision('')
   }
 
   const startMatch = async (matchId) => {
     const match = matches.find(m => m.id === matchId)
-    if (!canStartScheduledMatch(match)) {
-      alert(`Match can start only at scheduled time: ${match.date}${match.time ? ` ${match.time}` : ''}`)
+    if (!match) return
+    const tossWinnerId = parseInt(inlineTossWinnerId, 10)
+    const decisionRaw = String(inlineTossDecision || '').toLowerCase()
+    const decision = decisionRaw === 'ball' ? 'bowl' : decisionRaw
+    if (!tossWinnerId) {
+      alert('Select toss winner team first')
       return
     }
-    const tossWinner = prompt(`Toss Winner (enter team name):\n1. ${match.team_a_name}\n2. ${match.team_b_name}`)
-    if (!tossWinner) return
-    const tossWinnerId = tossWinner === '1' || tossWinner.toLowerCase().includes(match.team_a_name.toLowerCase()) ? match.team_a_id : match.team_b_id
-    const decision = prompt('Toss decision: bat or bowl?')?.toLowerCase()
-    if (!decision || (decision !== 'bat' && decision !== 'bowl')) return
+    if (decision !== 'bat' && decision !== 'bowl') {
+      alert('Choose toss decision: Bat or Ball')
+      return
+    }
+    setStartMatchBusyId(matchId)
     const res = await apiCall(`/matches/${matchId}/start`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ toss_winner_id: tossWinnerId, toss_decision: decision })
     })
     const payload = await res.json().catch(() => ({}))
     if (!res.ok) {
+      setStartMatchBusyId(null)
       alert(payload.error || 'Failed to start match')
       return
     }
+    cancelInlineTossSetup()
+    setStartMatchBusyId(null)
     navigate(`/admin/scoring/${matchId}`)
   }
 
@@ -940,38 +1015,90 @@ export default function AdminPanel() {
     .filter((p) => ['bowler', 'all-rounder', 'all rounder'].includes((p.role || '').toLowerCase())).length
   const canSubmitBulkTeam = bulkTeamName.trim() && enteredPlayerCount === 11 && enteredBowlerCount >= 2 && !!(bulkPlayers[bulkCaptainIndex]?.name || '').trim()
   const selectedLeagueObj = leagues.find((l) => l.id === selectedLeague) || null
+  const selectedLeagueSponsors = (Array.isArray(selectedLeagueObj?.sponsors) ? selectedLeagueObj.sponsors : [])
+    .map((s) => (typeof s === 'string' ? s : s?.name))
+    .filter(Boolean)
+    .slice(0, 4)
+  const selectedTeamObj = teams.find((t) => t.id === selectedTeam) || null
+  const selectedCaptainName = String(selectedTeamObj?.captain_name || '').trim().toLowerCase()
 
   return (
-    <div className="admin-layout">
-
-      <div className="admin-mobile-head">
-        <div className="admin-mobile-brand">
-          <h3>Admin</h3>
-          <p>{user?.username || 'Organizer'}</p>
+    <div style={{ paddingBottom: '80px', display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
+      {/* ── Modern Premium Header ── */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(15,23,42,0.95), rgba(2,6,23,0.98))',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        boxShadow: '0 4px 30px rgba(0,0,0,0.5)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        padding: '16px 20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'linear-gradient(135deg, #00e896, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', boxShadow: '0 4px 12px rgba(0,232,150,0.3)' }}>
+            👑
+          </div>
+          <div>
+            <h1 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.2px', color: '#fff' }}>Admin Center</h1>
+            <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--t3)', fontWeight: 600 }}>{user?.username || 'Organizer'}</p>
+          </div>
         </div>
-        <div className="admin-mobile-actions">
-          <button className="icon-btn" onClick={toggleTheme} title="Toggle theme">
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={toggleTheme} style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--t1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', cursor: 'pointer' }}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <button className="btn btn-sm btn-danger" onClick={doLogout}>Logout</button>
+          <button onClick={doLogout} style={{ height: 36, padding: '0 12px', borderRadius: '18px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}>
+            Logout
+          </button>
         </div>
       </div>
 
-      {/* ══ SIDEBAR ══ */}
-      <aside className="admin-sidebar">
-        <div className="admin-sidebar-logo">
-          <h3>Admin</h3>
-        </div>
+      {/* ── Scrollable Tab Navigation ── */}
+      <div className="ios-main-scroll" style={{
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        display: 'flex',
+        gap: 8,
+        padding: '12px 20px',
+        background: 'var(--bg)',
+        borderBottom: '1px solid rgba(255,255,255,0.03)',
+        flexShrink: 0,
+        WebkitOverflowScrolling: 'touch'
+      }}>
         {sections.map(s => (
-          <button key={s.id} className={`admin-sidebar-item${activeSection === s.id ? ' active' : ''}`} onClick={() => setActiveSection(s.id)}>
-            <span className="sidebar-icon">{s.icon}</span>
-            <span className="sidebar-label">{s.label}</span>
+          <button
+            key={s.id}
+            onClick={() => setActiveSection(s.id)}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '20px',
+              border: activeSection === s.id ? '1px solid rgba(0,232,150,0.4)' : '1px solid rgba(255,255,255,0.08)',
+              background: activeSection === s.id ? 'linear-gradient(135deg, rgba(0,232,150,0.15), rgba(2,132,199,0.1))' : 'rgba(255,255,255,0.02)',
+              color: activeSection === s.id ? '#00e896' : 'var(--t2)',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s ease',
+              boxShadow: activeSection === s.id ? '0 4px 12px rgba(0,232,150,0.1)' : 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <span style={{ fontSize: '1rem' }}>{s.icon}</span>
+            {s.label}
           </button>
         ))}
-      </aside>
+      </div>
 
-      {/* ══ CONTENT ══ */}
-      <div className="admin-content">
+      {/* ── Main Scrollable Content ── */}
+      <div className="ios-main-scroll" style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
         {dataError && (
           <div className="error-banner" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             <span>{dataError}</span>
@@ -998,6 +1125,7 @@ export default function AdminPanel() {
                   <div><strong style={{ color:'var(--t1)' }}>{selectedLeagueObj.name}</strong> · {selectedLeagueObj.city || 'City N/A'}</div>
                   <div>Owner: {selectedLeagueObj.organizer || 'N/A'} · Season: {selectedLeagueObj.season || 'N/A'} · Format: {selectedLeagueObj.format || 'round-robin'}</div>
                   <div>Overs: {selectedLeagueObj.overs_per_innings || 20} · Venue: {selectedLeagueObj.venue || 'N/A'} · Teams: {selectedLeagueObj.team_count || 0}</div>
+                  <div>Sponsors: {selectedLeagueSponsors.length ? selectedLeagueSponsors.join(' · ') : 'No sponsors added'}</div>
                 </div>
               </div>
             )}
@@ -1093,6 +1221,32 @@ export default function AdminPanel() {
                         </select>
                         <input className="form-input" type="file" accept="image/*" onChange={e => setInlineLeagueLogo(e.target.files[0] || null)} />
                       </div>
+                      <div className="form-grid">
+                        {inlineLeagueSponsors.map((s, idx) => (
+                          <div key={idx} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
+                            <input
+                              className="form-input"
+                              value={s.name}
+                              onChange={e => {
+                                const next = [...inlineLeagueSponsors]
+                                next[idx] = { ...next[idx], name: e.target.value }
+                                setInlineLeagueSponsors(next)
+                              }}
+                              placeholder={`Sponsor ${idx + 1}`}
+                            />
+                            <input
+                              className="form-input"
+                              type="file"
+                              accept="image/*"
+                              onChange={e => {
+                                const next = [...inlineLeagueSponsors]
+                                next[idx] = { ...next[idx], logo: e.target.files?.[0] || null }
+                                setInlineLeagueSponsors(next)
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
                       <div style={{ display:'flex', gap:6 }}>
                         <button className="btn btn-sm btn-primary" onClick={() => saveInlineLeagueEdit(league.id)}>Save</button>
                         <button className="btn btn-sm btn-secondary" onClick={cancelInlineLeagueEdit}>Cancel</button>
@@ -1111,6 +1265,15 @@ export default function AdminPanel() {
                       <div style={{ fontSize:'0.66rem', color:'var(--t3)', marginTop:3, lineHeight:1.35 }}>
                         Owner: {league.organizer || 'N/A'} · Season: {league.season || 'N/A'} · Overs: {league.overs_per_innings || 20} · Venue: {league.venue || 'N/A'}
                       </div>
+                      <div style={{ fontSize:'0.66rem', color:'var(--t3)', marginTop:3, lineHeight:1.35 }}>
+                        Sponsors: {
+                          ((Array.isArray(league.sponsors) ? league.sponsors : [])
+                            .map((s) => (typeof s === 'string' ? s : s?.name))
+                            .filter(Boolean)
+                            .slice(0, 3)
+                            .join(' · ')) || 'No sponsors added'
+                        }
+                      </div>
                     </div>
                     <span className={`badge ${league.status==='active'?'badge-live':league.status==='completed'?'badge-completed':'badge-upcoming'}`} style={{ flexShrink:0 }}>{league.status}</span>
                     <button className="btn btn-sm btn-secondary" style={{ padding:'3px 9px', fontSize:'0.68rem', flexShrink:0 }} onClick={e => { e.stopPropagation(); startInlineLeagueEdit(league) }}>Edit</button>
@@ -1119,6 +1282,7 @@ export default function AdminPanel() {
                   )}
                   <BannerSection>
                     <BannerBtn label="League Banner" busy={isBusy(`league_${league.id}`)} onClick={e => { e.stopPropagation(); handleLeagueBanner(league) }} />
+                    <BannerBtn label="League Winner" icon="🥇" busy={isBusy(`league_winner_${league.id}`)} onClick={e => { e.stopPropagation(); handleLeagueWinnerBanner(league) }} />
                   </BannerSection>
                 </div>
               ))}
@@ -1270,10 +1434,53 @@ export default function AdminPanel() {
                     action={
                       <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                         <BannerBtn label="Banner" icon="🎨" busy={isGeneratingSquadBanner} busyLabel="…" onClick={() => generateSquadBannerFromSquads(selectedTeam)} />
-                        <button className="btn btn-primary btn-sm" onClick={() => setShowModal('addSinglePlayer')}>+ Player</button>
+                        <button className="btn btn-primary btn-sm" onClick={() => setShowInlineAddPlayerForm(v => !v)}>{showInlineAddPlayerForm ? 'Close Form' : '+ Player'}</button>
                       </div>
                     }
                   />
+                  {showInlineAddPlayerForm && (
+                    <div className="glass-card" style={{ padding:'12px 14px', marginBottom:10, borderLeft:'3px solid var(--accent)' }}>
+                      <form onSubmit={addPlayer}>
+                        <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr 0.8fr 1.1fr auto', gap:8, alignItems:'end' }}>
+                          <div>
+                            <label className="form-label">Player Name *</label>
+                            <input className="form-input" value={playerForm.name} onChange={e => setPlayerForm({...playerForm,name:e.target.value})} required />
+                          </div>
+                          <div>
+                            <label className="form-label">Role</label>
+                            <select className="form-select" value={playerForm.role} onChange={e => setPlayerForm({...playerForm,role:e.target.value})}>
+                              <option value="batsman">Batsman</option>
+                              <option value="bowler">Bowler</option>
+                              <option value="all-rounder">All-Rounder</option>
+                              <option value="wicket-keeper">Wicket Keeper</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="form-label">Jersey #</label>
+                            <input className="form-input" type="number" value={playerForm.jersey_number} onChange={e => setPlayerForm({...playerForm,jersey_number:e.target.value})} placeholder="18" />
+                          </div>
+                          <div>
+                            <label className="form-label">Photo</label>
+                            <input className="form-input" type="file" accept="image/*" onChange={e => setPlayerPhoto(e.target.files?.[0] || null)} style={{ fontSize:'0.76rem', padding:'6px' }} />
+                          </div>
+                          <div style={{ display:'flex', gap:6 }}>
+                            <button type="submit" className="btn btn-primary btn-sm">Add</button>
+                            <button
+                              type="button"
+                              className="btn btn-secondary btn-sm"
+                              onClick={() => {
+                                setShowInlineAddPlayerForm(false)
+                                setPlayerForm({ name: '', role: 'batsman', jersey_number: '' })
+                                setPlayerPhoto(null)
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  )}
                   {/* Squad team selector */}
                   {teams.length > 1 && (
                     <div style={{ display:'flex', gap:6, flexWrap:'nowrap', overflowX:'auto', marginBottom:12, paddingBottom:4, scrollbarWidth:'none' }}>
@@ -1325,6 +1532,9 @@ export default function AdminPanel() {
                               <div style={{ fontWeight:600, fontSize:'0.82rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{player.name}</div>
                               <div style={{ fontSize:'0.63rem', color:'var(--t3)' }}>{player.role}</div>
                             </div>
+                            {(player.is_captain || (selectedCaptainName && String(player.name || '').trim().toLowerCase() === selectedCaptainName)) && (
+                              <span className="badge badge-live" style={{ fontSize:'0.6rem', padding:'2px 6px', lineHeight:1 }}>Captain</span>
+                            )}
                             {player.jersey_number && (
                               <div style={{ width:22, height:22, borderRadius:'50%', background:'var(--accent-dim)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.6rem', fontFamily:'var(--font-mono)', fontWeight:700, color:'var(--accent)', flexShrink:0 }}>{player.jersey_number}</div>
                             )}
@@ -1354,10 +1564,69 @@ export default function AdminPanel() {
                     action={
                       <div style={{ display:'flex', gap:6 }}>
                         <button className="btn btn-sm btn-secondary" style={{ padding:'5px 10px', fontSize:'0.72rem' }} onClick={clearUpcomingFixtures}>Clear</button>
-                        <button className="btn btn-sm btn-gold" onClick={() => setShowModal('fixtureSetup')}>⚡ Generate</button>
+                        <button className="btn btn-sm btn-gold" onClick={() => setShowInlineFixtureSetup(v => !v)}>{showInlineFixtureSetup ? 'Close' : '⚡ Generate'}</button>
                       </div>
                     }
                   />
+                  {showInlineFixtureSetup && (
+                    <div className="glass-card" style={{ padding:'12px 14px', marginBottom:10, borderLeft:'3px solid var(--gold)' }}>
+                      <form onSubmit={submitFixtureSetup}>
+                        <div className="glass-card" style={{ padding:'10px 12px', marginBottom:10, borderLeft:'3px solid var(--gold)' }}>
+                          <div style={{ fontSize:'0.78rem', color:'var(--t2)', lineHeight:1.45 }}>
+                            <div>Format: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.format || fixtureForm.format}</strong></div>
+                            <div>Teams: <strong style={{ color:'var(--t1)' }}>{teams.length}</strong> · Overs: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.overs_per_innings || fixtureForm.overs_per_innings}</strong></div>
+                            <div>Venue: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.venue || fixtureForm.venue || 'N/A'}</strong></div>
+                          </div>
+                        </div>
+                        <div className="form-grid">
+                          <div className="form-group"><label className="form-label">Start Date</label><input className="form-input" type="date" value={fixtureForm.match_date} onChange={e => setFixtureForm(p=>({...p,match_date:e.target.value}))} /></div>
+                          <div className="form-group"><label className="form-label">Time</label><input className="form-input" type="time" value={fixtureForm.match_time} onChange={e => setFixtureForm(p=>({...p,match_time:e.target.value}))} /></div>
+                        </div>
+                        <label style={{ display:'flex', alignItems:'center', gap:8, marginTop:6, fontSize:'0.82rem', cursor:'pointer' }}>
+                          <input type="checkbox" checked={fixtureForm.auto_generate_vs} onChange={e => setFixtureForm(p=>({...p,auto_generate_vs:e.target.checked}))} />
+                          Auto-create VS banners after generation
+                        </label>
+                        <label style={{ display:'flex', alignItems:'center', gap:8, marginTop:6, fontSize:'0.82rem', cursor:'pointer' }}>
+                          <input type="checkbox" checked={fixtureForm.auto_generate_vs_icc} onChange={e => setFixtureForm(p=>({...p,auto_generate_vs_icc:e.target.checked}))} />
+                          Auto-create ICC International fixture banners
+                        </label>
+                        <div style={{ marginTop:14, display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+                          <span style={{ fontWeight:700, fontSize:'0.82rem' }}>Fixture Draft</span>
+                          <button type="button" className="btn btn-secondary btn-sm" onClick={createFixtureDrafts}>Preview Draft</button>
+                        </div>
+                        {fixtureDrafts.length > 0 && (
+                          <div style={{ overflowX:'auto', borderRadius:'var(--r-md)', border:'1px solid var(--glass-bd)' }}>
+                            <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.78rem' }}>
+                              <thead>
+                                <tr style={{ background:'var(--glass-bg)' }}>
+                                  <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)', whiteSpace:'nowrap' }}>Match</th>
+                                  <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)' }}>Date</th>
+                                  <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)' }}>Time</th>
+                                  <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)' }}>Venue</th>
+                                  <th style={{ padding:'7px 8px' }}></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {fixtureDrafts.map((row,idx) => (
+                                  <tr key={`${row.team_a_id}-${row.team_b_id}-${idx}`} style={{ borderTop:'1px solid var(--glass-bd)' }}>
+                                    <td style={{ padding:'6px 10px', whiteSpace:'nowrap', fontWeight:600 }}>{row.team_a_name} vs {row.team_b_name}</td>
+                                    <td style={{ padding:'6px 8px' }}><input className="form-input" type="date" value={row.date||''} onChange={e => updateFixtureDraft(idx,'date',e.target.value)} style={{ minWidth:130, fontSize:'0.78rem' }} /></td>
+                                    <td style={{ padding:'6px 8px' }}><input className="form-input" type="time" value={row.time||''} onChange={e => updateFixtureDraft(idx,'time',e.target.value)} style={{ minWidth:110, fontSize:'0.78rem' }} /></td>
+                                    <td style={{ padding:'6px 8px' }}><input className="form-input" value={row.venue||''} onChange={e => updateFixtureDraft(idx,'venue',e.target.value)} placeholder="Venue" style={{ minWidth:150, fontSize:'0.78rem' }} /></td>
+                                    <td style={{ padding:'6px 8px' }}><button type="button" className="btn btn-sm btn-danger" style={{ padding:'3px 8px', fontSize:'0.68rem' }} onClick={() => removeFixtureDraft(idx)}>✕</button></td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                        <div style={{ display:'flex', gap:8, justifyContent:'flex-end', marginTop:10 }}>
+                          <button type="button" className="btn btn-secondary" onClick={() => setShowInlineFixtureSetup(false)}>Cancel</button>
+                          <button type="submit" className="btn btn-gold" disabled={fixtureGenerating}>{fixtureGenerating ? 'Generating…' : 'Generate Fixtures'}</button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
                   <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                     {matches.map(m => (
                       <div key={m.id} className="glass-card" style={{ padding:'11px 14px' }}>
@@ -1386,9 +1655,8 @@ export default function AdminPanel() {
                             <button
                               className="btn btn-sm btn-primary"
                               style={{ padding:'4px 10px', fontSize:'0.72rem' }}
-                              onClick={() => startMatch(m.id)}
-                              disabled={!canStartScheduledMatch(m)}
-                              title={!canStartScheduledMatch(m) ? `Starts at ${m.date}${m.time ? ` ${m.time}` : ''}` : 'Start match'}
+                              onClick={() => openInlineTossSetup(m)}
+                              title="Start match"
                             >
                               ▶ Start
                             </button>
@@ -1396,8 +1664,101 @@ export default function AdminPanel() {
                           {m.status==='live' && <button className="btn btn-sm btn-gold" style={{ padding:'4px 10px', fontSize:'0.72rem' }} onClick={() => navigate(`/admin/scoring/${m.id}`)}>◉ Score</button>}
                           {m.status==='upcoming' && <button className="btn btn-sm btn-danger" style={{ padding:'4px 10px', fontSize:'0.72rem' }} onClick={() => deleteFixture(m.id)}>Delete</button>}
                         </div>
+                        {m.status === 'upcoming' && inlineTossMatchId === m.id && (
+                          <div className="glass-card" style={{ marginTop:8, padding:'10px 12px', borderLeft:'3px solid var(--accent)' }}>
+                            <div style={{ fontSize:'0.7rem', fontWeight:800, color:'var(--accent)', letterSpacing:'0.4px', marginBottom:8, textTransform:'uppercase' }}>
+                              Toss Setup
+                            </div>
+                            <div style={{ fontSize:'0.76rem', color:'var(--t2)', marginBottom:8 }}>Select toss winner and decision to start live match.</div>
+                            <div style={{ marginBottom:8 }}>
+                              <div style={{ fontSize:'0.68rem', fontWeight:700, color:'var(--t3)', marginBottom:6 }}>Toss Winner</div>
+                              <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                                <button type="button" className={`btn btn-sm ${String(inlineTossWinnerId)===String(m.team_a_id) ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setInlineTossWinnerId(String(m.team_a_id))}>{m.team_a_name}</button>
+                                <button type="button" className={`btn btn-sm ${String(inlineTossWinnerId)===String(m.team_b_id) ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setInlineTossWinnerId(String(m.team_b_id))}>{m.team_b_name}</button>
+                              </div>
+                            </div>
+                            <div style={{ marginBottom:10 }}>
+                              <div style={{ fontSize:'0.68rem', fontWeight:700, color:'var(--t3)', marginBottom:6 }}>Decision</div>
+                              <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                                <button type="button" className={`btn btn-sm ${inlineTossDecision==='bat' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setInlineTossDecision('bat')}>Bat</button>
+                                <button type="button" className={`btn btn-sm ${inlineTossDecision==='bowl' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setInlineTossDecision('bowl')}>Ball</button>
+                              </div>
+                            </div>
+                            <div style={{ display:'flex', gap:6 }}>
+                              <button type="button" className="btn btn-sm btn-primary" disabled={startMatchBusyId===m.id} onClick={() => startMatch(m.id)}>{startMatchBusyId===m.id ? 'Starting…' : 'Start Live'}</button>
+                              <button type="button" className="btn btn-sm btn-secondary" onClick={cancelInlineTossSetup}>Cancel</button>
+                            </div>
+                          </div>
+                        )}
+                        {editMatch?.id === m.id && (
+                          <div className="glass-card" style={{ marginTop:8, padding:'10px 12px', borderLeft:'3px solid var(--gold)' }}>
+                            <div style={{ fontSize:'0.7rem', fontWeight:800, color:'var(--gold)', letterSpacing:'0.4px', marginBottom:8, textTransform:'uppercase' }}>
+                              Edit Fixture
+                            </div>
+                            <form onSubmit={saveEditedMatch}>
+                              <div className="form-grid">
+                                <div className="form-group">
+                                  <label className="form-label">Date</label>
+                                  <input
+                                    className="form-input"
+                                    type="date"
+                                    value={editMatchDraft.date}
+                                    onChange={e => setEditMatchDraft(prev => ({ ...prev, date: e.target.value }))}
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label className="form-label">Time</label>
+                                  <input
+                                    className="form-input"
+                                    type="time"
+                                    value={editMatchDraft.time}
+                                    onChange={e => setEditMatchDraft(prev => ({ ...prev, time: e.target.value }))}
+                                  />
+                                </div>
+                              </div>
+                              <div className="form-grid">
+                                <div className="form-group">
+                                  <label className="form-label">Venue</label>
+                                  <input
+                                    className="form-input"
+                                    value={editMatchDraft.venue}
+                                    onChange={e => setEditMatchDraft(prev => ({ ...prev, venue: e.target.value }))}
+                                    placeholder="Enter venue"
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label className="form-label">Overs</label>
+                                  <input
+                                    className="form-input"
+                                    type="number"
+                                    min="1"
+                                    value={editMatchDraft.overs_per_innings}
+                                    onChange={e => setEditMatchDraft(prev => ({ ...prev, overs_per_innings: e.target.value }))}
+                                  />
+                                </div>
+                              </div>
+                              <div className="form-group" style={{ marginBottom:10 }}>
+                                <label className="form-label">Status</label>
+                                <select
+                                  className="form-select"
+                                  value={editMatchDraft.status}
+                                  onChange={e => setEditMatchDraft(prev => ({ ...prev, status: e.target.value }))}
+                                >
+                                  <option value="upcoming">Upcoming</option>
+                                  <option value="live">Live</option>
+                                  <option value="completed">Completed</option>
+                                </select>
+                              </div>
+                              <div style={{ display:'flex', gap:6 }}>
+                                <button type="submit" className="btn btn-sm btn-primary">Save Fixture</button>
+                                <button type="button" className="btn btn-sm btn-secondary" onClick={() => setEditMatch(null)}>Cancel</button>
+                              </div>
+                            </form>
+                          </div>
+                        )}
                         <BannerSection>
                           <BannerBtn label="VS Banner" busy={isBusy(`vs_${m.id}`)} onClick={() => handleVsBanner(m)} />
+                          <BannerBtn label="ICC VS" icon="🌍" busy={isBusy(`vs_icc_${m.id}`)} onClick={() => handleIccVsBanner(m)} />
                         </BannerSection>
                       </div>
                     ))}
@@ -1454,6 +1815,7 @@ export default function AdminPanel() {
                   <button className="btn btn-sm btn-secondary" style={{ padding:'4px 10px', fontSize:'0.72rem' }} onClick={() => navigate(`/match/${m.id}/scorecard`)}>View Scorecard</button>
                   <BannerSection>
                     <BannerBtn label="Result" busy={isBusy(`result_${m.id}`)} onClick={() => handleResultBanner(m)} />
+                    <BannerBtn label="Winner" icon="🏆" busy={isBusy(`winner_${m.id}`)} onClick={() => handleMatchWinnerBanner(m)} />
                     <BannerBtn label="Summary" busy={isBusy(`summary_${m.id}`)} onClick={() => handleSummaryBanner(m)} />
                   </BannerSection>
                 </div>
@@ -1536,186 +1898,6 @@ export default function AdminPanel() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {showModal === 'fixtureSetup' && (
-        <div className="modal-overlay" onClick={() => setShowModal(null)}>
-          <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth:860 }}>
-            <div className="modal-header"><h3>Fixture Setup</h3><button className="modal-close" onClick={() => setShowModal(null)}>×</button></div>
-            <form onSubmit={submitFixtureSetup}>
-              <div className="modal-body">
-                <div className="glass-card" style={{ padding:'10px 12px', marginBottom:10, borderLeft:'3px solid var(--gold)' }}>
-                  <div style={{ fontSize:'0.78rem', color:'var(--t2)', lineHeight:1.45 }}>
-                    <div>Format: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.format || fixtureForm.format}</strong></div>
-                    <div>Teams: <strong style={{ color:'var(--t1)' }}>{teams.length}</strong> · Overs: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.overs_per_innings || fixtureForm.overs_per_innings}</strong></div>
-                    <div>Venue: <strong style={{ color:'var(--t1)' }}>{selectedLeagueObj?.venue || fixtureForm.venue || 'N/A'}</strong></div>
-                  </div>
-                </div>
-                <div className="form-grid">
-                  <div className="form-group"><label className="form-label">Start Date</label><input className="form-input" type="date" value={fixtureForm.match_date} onChange={e => setFixtureForm(p=>({...p,match_date:e.target.value}))} /></div>
-                  <div className="form-group"><label className="form-label">Time</label><input className="form-input" type="time" value={fixtureForm.match_time} onChange={e => setFixtureForm(p=>({...p,match_time:e.target.value}))} /></div>
-                </div>
-                <label style={{ display:'flex', alignItems:'center', gap:8, marginTop:6, fontSize:'0.82rem', cursor:'pointer' }}>
-                  <input type="checkbox" checked={fixtureForm.auto_generate_vs} onChange={e => setFixtureForm(p=>({...p,auto_generate_vs:e.target.checked}))} />
-                  Auto-create VS banners after generation
-                </label>
-                <div style={{ marginTop:14, display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
-                  <span style={{ fontWeight:700, fontSize:'0.82rem' }}>Fixture Draft</span>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={createFixtureDrafts}>Preview Draft</button>
-                </div>
-                {fixtureDrafts.length > 0 && (
-                  <div style={{ overflowX:'auto', borderRadius:'var(--r-md)', border:'1px solid var(--glass-bd)' }}>
-                    <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.78rem' }}>
-                      <thead>
-                        <tr style={{ background:'var(--glass-bg)' }}>
-                          <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)', whiteSpace:'nowrap' }}>Match</th>
-                          <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)' }}>Date</th>
-                          <th style={{ padding:'7px 10px', textAlign:'left', fontWeight:700, color:'var(--t3)' }}>Time</th>
-                          <th style={{ padding:'7px 8px' }}></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {fixtureDrafts.map((row,idx) => (
-                          <tr key={`${row.team_a_id}-${row.team_b_id}-${idx}`} style={{ borderTop:'1px solid var(--glass-bd)' }}>
-                            <td style={{ padding:'6px 10px', whiteSpace:'nowrap', fontWeight:600 }}>{row.team_a_name} vs {row.team_b_name}</td>
-                            <td style={{ padding:'6px 8px' }}><input className="form-input" type="date" value={row.date||''} onChange={e => updateFixtureDraft(idx,'date',e.target.value)} style={{ minWidth:130, fontSize:'0.78rem' }} /></td>
-                            <td style={{ padding:'6px 8px' }}><input className="form-input" type="time" value={row.time||''} onChange={e => updateFixtureDraft(idx,'time',e.target.value)} style={{ minWidth:110, fontSize:'0.78rem' }} /></td>
-                            <td style={{ padding:'6px 8px' }}><button type="button" className="btn btn-sm btn-danger" style={{ padding:'3px 8px', fontSize:'0.68rem' }} onClick={() => removeFixtureDraft(idx)}>✕</button></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(null)}>Cancel</button>
-                <button type="submit" className="btn btn-gold" disabled={fixtureGenerating}>{fixtureGenerating ? 'Generating…' : 'Generate Fixtures'}</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showModal === 'addSinglePlayer' && (
-        <div className="modal-overlay" onClick={() => setShowModal(null)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <div className="modal-header"><h3>Add Player</h3><button className="modal-close" onClick={() => setShowModal(null)}>×</button></div>
-            <form onSubmit={addPlayer}>
-              <div className="modal-body">
-                <div className="form-group"><label className="form-label">Player Name *</label><input className="form-input" value={playerForm.name} onChange={e => setPlayerForm({...playerForm,name:e.target.value})} required /></div>
-                <div className="form-grid">
-                  <div className="form-group"><label className="form-label">Role</label>
-                    <select className="form-select" value={playerForm.role} onChange={e => setPlayerForm({...playerForm,role:e.target.value})}>
-                      <option value="batsman">Batsman</option>
-                      <option value="bowler">Bowler</option>
-                      <option value="all-rounder">All-Rounder</option>
-                      <option value="wicket-keeper">Wicket Keeper</option>
-                    </select>
-                  </div>
-                  <div className="form-group"><label className="form-label">Jersey #</label><input className="form-input" type="number" value={playerForm.jersey_number} onChange={e => setPlayerForm({...playerForm,jersey_number:e.target.value})} placeholder="18" /></div>
-                </div>
-                <div className="form-group"><label className="form-label">Photo</label><input className="form-input" type="file" accept="image/*" onChange={e => setPlayerPhoto(e.target.files[0])} /></div>
-              </div>
-              <div className="modal-footer"><button type="submit" className="btn btn-primary">Add Player</button></div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showModal === 'editPlayer' && (
-        <div className="modal-overlay" onClick={() => setShowModal(null)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <div className="modal-header"><h3>Edit Player</h3><button className="modal-close" onClick={() => setShowModal(null)}>×</button></div>
-            <form onSubmit={updatePlayer}>
-              <div className="modal-body">
-                <div className="form-group"><label className="form-label">Name *</label><input className="form-input" value={editPlayerForm.name} onChange={e => setEditPlayerForm({...editPlayerForm,name:e.target.value})} required /></div>
-                <div className="form-grid">
-                  <div className="form-group"><label className="form-label">Role</label>
-                    <select className="form-select" value={editPlayerForm.role} onChange={e => setEditPlayerForm({...editPlayerForm,role:e.target.value})}>
-                      <option value="batsman">Batsman</option>
-                      <option value="bowler">Bowler</option>
-                      <option value="all-rounder">All-Rounder</option>
-                      <option value="wicket-keeper">Wicket Keeper</option>
-                    </select>
-                  </div>
-                  <div className="form-group"><label className="form-label">Jersey #</label><input className="form-input" type="number" value={editPlayerForm.jersey_number} onChange={e => setEditPlayerForm({...editPlayerForm,jersey_number:e.target.value})} /></div>
-                </div>
-                <div className="form-group"><label className="form-label">Replace Photo</label><input className="form-input" type="file" accept="image/*" onChange={e => setEditPlayerPhoto(e.target.files[0])} /></div>
-              </div>
-              <div className="modal-footer"><button type="submit" className="btn btn-primary">Save Changes</button></div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {editMatch && (
-        <div className="modal-overlay" onClick={() => setEditMatch(null)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <div className="modal-header"><h3>Edit Fixture</h3><button className="modal-close" onClick={() => setEditMatch(null)}>×</button></div>
-            <form onSubmit={saveEditedMatch}>
-              <div className="modal-body">
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label className="form-label">Date</label>
-                    <input
-                      className="form-input"
-                      type="date"
-                      value={editMatchDraft.date}
-                      onChange={e => setEditMatchDraft(prev => ({ ...prev, date: e.target.value }))}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Time</label>
-                    <input
-                      className="form-input"
-                      type="time"
-                      value={editMatchDraft.time}
-                      onChange={e => setEditMatchDraft(prev => ({ ...prev, time: e.target.value }))}
-                    />
-                  </div>
-                </div>
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label className="form-label">Venue</label>
-                    <input
-                      className="form-input"
-                      value={editMatchDraft.venue}
-                      onChange={e => setEditMatchDraft(prev => ({ ...prev, venue: e.target.value }))}
-                      placeholder="Enter venue"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Overs</label>
-                    <input
-                      className="form-input"
-                      type="number"
-                      min="1"
-                      value={editMatchDraft.overs_per_innings}
-                      onChange={e => setEditMatchDraft(prev => ({ ...prev, overs_per_innings: e.target.value }))}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Status</label>
-                  <select
-                    className="form-select"
-                    value={editMatchDraft.status}
-                    onChange={e => setEditMatchDraft(prev => ({ ...prev, status: e.target.value }))}
-                  >
-                    <option value="upcoming">Upcoming</option>
-                    <option value="live">Live</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
-              </div>
-              <div className="modal-footer" style={{ display:'flex', gap:8, justifyContent:'flex-end' }}>
-                <button type="button" className="btn btn-secondary" onClick={() => setEditMatch(null)}>Cancel</button>
-                <button type="submit" className="btn btn-primary">Save Fixture</button>
-              </div>
-            </form>
           </div>
         </div>
       )}

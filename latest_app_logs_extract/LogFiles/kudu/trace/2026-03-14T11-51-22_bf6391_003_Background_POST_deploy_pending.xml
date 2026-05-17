@@ -1,0 +1,31 @@
+<step title="BackgroundTrace" date="2026-03-14T11:51:22.538" instance="bf6391" url="/deploy" method="POST" >
+  <step title="Creating temporary deployment - FetchDeploymentManager" date="2026-03-14T11:51:24.715" /><!-- duration: 1315ms -->
+  <step title="Creating temporary deployment" date="2026-03-14T11:51:26.140" /><!-- duration: 552ms -->
+  <step title="Performing fetch based deployment" date="2026-03-14T11:51:28.428" >
+    <step title="Deployment timer started" date="2026-03-14T11:52:05.323" >
+      <step title="DeploymentManager.Deploy(id:c98f3e472aa9753a0e2a2bb6ec799df947f3e965)" date="2026-03-14T11:52:05.524" >
+        <step title="Collecting changeset information" date="2026-03-14T11:52:05.757" /><!-- duration: 434ms -->
+        <step title="Updating submodules" date="2026-03-14T11:52:06.273" /><!-- duration: 1352ms -->
+        <step title="Determining deployment builder" date="2026-03-14T11:52:08.202" >
+          <step title="Builder is BasicBuilder" date="2026-03-14T11:52:08.251" /><!-- duration: 11ms -->
+        </step><!-- duration: 80ms -->
+        <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-14T11:52:08.723" >
+          <step title="PreDeployment: context.OutputPath /home/site/wwwroot" date="2026-03-14T11:52:09.215" >
+            <step title="Building" date="2026-03-14T11:52:09.568" >
+              <step title="Executing external process" date="2026-03-14T11:52:10.694" type="process" path="starter.sh" arguments="/opt/Kudu/Scripts/parallel_rsync.sh /home/site/repository /home/site/wwwroot 8 /tmp/ False True  " /><!-- duration: 30238ms -->
+              <step title="Triggering recycle (preview mode disabled)." date="2026-03-14T11:52:41.236" /><!-- duration: 7ms -->
+              <step title="Modified file to trigger a restart of the app container." date="2026-03-14T11:52:41.295" /><!-- duration: 5ms -->
+              <step title="Skip function trigger and logicapp sync because function is not enabled." date="2026-03-14T11:52:41.307" /><!-- duration: 4ms -->
+              <step title="Purge deployment items" date="2026-03-14T11:52:42.286" >
+                <step title="Remove 77c7e3a2-, Failed, received at 03/14/2026 11:29:54" date="2026-03-14T11:52:42.356" /><!-- duration: 4ms -->
+              </step><!-- duration: 77ms -->
+            </step><!-- duration: 32883ms -->
+          </step><!-- duration: 33242ms -->
+          <step title="Cleaning up temp files" date="2026-03-14T11:52:42.460" /><!-- duration: 4ms -->
+          <step title="Cleaning up temp files" date="2026-03-14T11:52:42.478" /><!-- duration: 523ms -->
+          <step title="Reloading status file with latest updates" date="2026-03-14T11:52:43.024" >
+            <step title="WebHooksManager.PublishEventAsync: PostDeployment" date="2026-03-14T11:52:43.030" /><!-- duration: 105ms -->
+          </step><!-- duration: 116ms -->
+          <step title="Cleaning up temporary deployment - fetch deployment was successful" date="2026-03-14T11:52:43.148" /><!-- duration: 4ms -->
+        </step><!-- duration: 34520ms -->
+      </step><!-- duration: 37735ms -->

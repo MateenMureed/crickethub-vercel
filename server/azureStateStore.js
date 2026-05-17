@@ -1,12 +1,25 @@
 const { CosmosClient } = require('@azure/cosmos');
 const fs = require('fs');
 
-const COSMOS_ENDPOINT = process.env.COSMOS_ENDPOINT;
-const COSMOS_KEY = process.env.COSMOS_KEY;
-const COSMOS_DB_NAME = process.env.COSMOS_DB_NAME || 'league-db';
-const COSMOS_CONTAINER_NAME = process.env.COSMOS_CONTAINER_NAME || 'app-state';
-const COSMOS_PARTITION_KEY = process.env.COSMOS_PARTITION_KEY || 'default';
-const COSMOS_DOC_ID = process.env.COSMOS_DOC_ID || 'state';
+const APP_SCOPE = (process.env.APP_SCOPE || '').trim().toLowerCase() || 'default';
+const APP_SCOPE_SUFFIX = APP_SCOPE === 'default' ? '' : `-${APP_SCOPE}`;
+
+let COSMOS_ENDPOINT = process.env.COSMOS_ENDPOINT || '';
+let COSMOS_KEY = process.env.COSMOS_KEY || '';
+let COSMOS_CONNECTION_STRING = process.env.COSMOS_CONNECTION_STRING || process.env.AZURE_COSMOS_CONNECTIONSTRING || '';
+
+// Handle the common mistake where users paste the entire connection string into COSMOS_ENDPOINT
+if (COSMOS_ENDPOINT.includes('AccountEndpoint=')) {
+  if (!COSMOS_CONNECTION_STRING) {
+    COSMOS_CONNECTION_STRING = COSMOS_ENDPOINT;
+  }
+  COSMOS_ENDPOINT = '';
+}
+
+const COSMOS_DB_NAME = process.env.COSMOS_DB_NAME || `league-db${APP_SCOPE_SUFFIX}`;
+const COSMOS_CONTAINER_NAME = process.env.COSMOS_CONTAINER_NAME || `app-state${APP_SCOPE_SUFFIX}`;
+const COSMOS_PARTITION_KEY = process.env.COSMOS_PARTITION_KEY || APP_SCOPE;
+const COSMOS_DOC_ID = process.env.COSMOS_DOC_ID || `state${APP_SCOPE_SUFFIX}`;
 
 let initialized = false;
 let disabledReason = '';
@@ -14,17 +27,20 @@ let containerRef = null;
 let pendingPersist = null;
 
 function isEnabled() {
-  return !!(COSMOS_ENDPOINT && COSMOS_KEY);
+  return !!(COSMOS_CONNECTION_STRING || (COSMOS_ENDPOINT && COSMOS_KEY));
 }
 
 async function ensureContainer() {
   if (containerRef) return containerRef;
   if (!isEnabled()) {
-    disabledReason = 'COSMOS_ENDPOINT/COSMOS_KEY not set';
+    disabledReason = 'COSMOS credentials not set';
     return null;
   }
 
-  const client = new CosmosClient({ endpoint: COSMOS_ENDPOINT, key: COSMOS_KEY });
+  const client = COSMOS_CONNECTION_STRING 
+    ? new CosmosClient(COSMOS_CONNECTION_STRING)
+    : new CosmosClient({ endpoint: COSMOS_ENDPOINT, key: COSMOS_KEY });
+  
   const { database } = await client.databases.createIfNotExists({ id: COSMOS_DB_NAME });
   const { container } = await database.containers.createIfNotExists({
     id: COSMOS_CONTAINER_NAME,

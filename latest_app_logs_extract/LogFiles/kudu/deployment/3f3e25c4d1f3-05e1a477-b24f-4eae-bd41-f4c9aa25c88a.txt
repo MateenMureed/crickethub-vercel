@@ -1,0 +1,96 @@
+2026-03-14T10:24:46  Fetching changes.
+2026-03-14T10:24:46    Starting  LocalZipHandler
+2026-03-14T10:24:46    Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/33a2ba9e-1546-4060-b6c1-fe19848d36ce.zip (36.17 MB) to /tmp/zipdeploy/extracted
+2026-03-14T10:24:50  Updating submodules.
+2026-03-14T10:24:50  Preparing deployment for commit id 'ea69abd9-0'.
+2026-03-14T10:24:50  PreDeployment: context.CleanOutputPath False
+2026-03-14T10:24:51  PreDeployment: context.OutputPath /home/site/wwwroot
+2026-03-14T10:24:51  Repository path is /tmp/zipdeploy/extracted
+2026-03-14T10:24:51  Running oryx build...
+2026-03-14T10:24:51    Command: oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de81b3ecf4e4fe -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log
+2026-03-14T10:24:52    Operation performed by Microsoft Oryx, https://github.com/Microsoft/Oryx
+2026-03-14T10:24:52    You can report issues at https://github.com/Microsoft/Oryx/issues
+2026-03-14T10:24:53    
+2026-03-14T10:24:53    Oryx Version: 0.2.20260204.1+0fdbe200b286be083841ff7fa201c6c2316dc6b9, Commit: 0fdbe200b286be083841ff7fa201c6c2316dc6b9, ReleaseTagName: 20260204.1
+2026-03-14T10:24:53    
+2026-03-14T10:24:53    Build Operation ID: b7cc4a2cc3c9508d
+2026-03-14T10:24:53    Repository Commit : ea69abd9-01ad-4583-be9d-661f6375f04a
+2026-03-14T10:24:53    OS Type           : bookworm
+2026-03-14T10:24:53    Image Type        : githubactions
+2026-03-14T10:24:53    
+2026-03-14T10:24:53    Primary SDK Storage URL: https://oryx-cdn.microsoft.io
+2026-03-14T10:24:53    Backup SDK Storage URL: 
+2026-03-14T10:24:53    Detecting platforms...
+2026-03-14T10:24:53    External SDK provider is enabled.
+2026-03-14T10:24:53    Requesting metadata for platform nodejs from external SDK provider
+2026-03-14T10:24:55    Requesting metadata for platform nodejs from external SDK provider
+2026-03-14T10:24:56    Detected following platforms:
+2026-03-14T10:24:56      nodejs: 22.22.0
+2026-03-14T10:24:57    Detected the following frameworks: Express,React
+2026-03-14T10:24:57    
+2026-03-14T10:24:57    Using intermediate directory '/tmp/8de81b3ecf4e4fe'.
+2026-03-14T10:24:57    
+2026-03-14T10:24:57    Copying files to the intermediate directory...
+2026-03-14T10:24:57    Copying files to intermediate directory done in 0 sec(s).
+2026-03-14T10:24:58    
+2026-03-14T10:24:58    Source directory     : /tmp/8de81b3ecf4e4fe
+2026-03-14T10:24:58    Destination directory: /home/site/wwwroot
+2026-03-14T10:24:58    
+2026-03-14T10:24:58    Running build script snippets...
+2026-03-14T10:24:58    Removing existing manifest file
+2026-03-14T10:24:58    Creating directory for command manifest file if it does not exist
+2026-03-14T10:24:58    Creating a manifest file...
+2026-03-14T10:24:58    Node Build Command Manifest file created.
+2026-03-14T10:24:58    
+2026-03-14T10:24:58    Using Node version:
+2026-03-14T10:24:58    v22.22.0
+2026-03-14T10:24:59    
+2026-03-14T10:24:59    Using Npm version:
+2026-03-14T10:24:59    10.9.4
+2026-03-14T10:24:59    
+2026-03-14T10:24:59    Running 'npm install'...
+2026-03-14T10:24:59    
+2026-03-14T10:25:12    npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2026-03-14T10:25:36    
+2026-03-14T10:25:36    added 220 packages, and audited 221 packages in 37s
+2026-03-14T10:25:36    
+2026-03-14T10:25:37    37 packages are looking for funding
+2026-03-14T10:25:37      run `npm fund` for details
+2026-03-14T10:25:37    
+2026-03-14T10:25:37    found 0 vulnerabilities
+2026-03-14T10:25:37    
+2026-03-14T10:25:37    Running 'npm run build'...
+2026-03-14T10:25:37    
+2026-03-14T10:25:37    
+2026-03-14T10:25:37    > crickethub@1.0.0 build
+2026-03-14T10:25:38    > vite build
+2026-03-14T10:25:38    
+2026-03-14T10:25:39    vite v6.4.1 building for production...
+2026-03-14T10:25:39    ✓ 0 modules transformed.
+2026-03-14T10:25:39    error during build:
+2026-03-14T10:25:39    Could not resolve entry module "index.html".
+2026-03-14T10:25:39        at getRollupError (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+2026-03-14T10:25:39        at error (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+2026-03-14T10:25:39        at ModuleLoader.loadEntryModule (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+2026-03-14T10:25:39        at async Promise.all (index 0)
+2026-03-14T10:25:39    npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 58ms
+error during build:
+Could not resolve entry module "index.html".
+    at getRollupError (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de81b3ecf4e4fe/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c "oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de81b3ecf4e4fe -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS "
+2026-03-14T10:25:40  
+2026-03-14T10:25:40  
+2026-03-14T10:25:40  Generating summary of Oryx build
+2026-03-14T10:25:40  Parsing the build logs
+2026-03-14T10:25:40  Found 0 issue(s)
+2026-03-14T10:25:40  
+2026-03-14T10:25:40  Build Summary :
+2026-03-14T10:25:41  ===============
+2026-03-14T10:25:41  Errors (0)
+2026-03-14T10:25:41  Warnings (0)
+2026-03-14T10:25:41  
+2026-03-14T10:25:42  Deployment Failed. deployer = OneDeploy deploymentPath = OneDeploy

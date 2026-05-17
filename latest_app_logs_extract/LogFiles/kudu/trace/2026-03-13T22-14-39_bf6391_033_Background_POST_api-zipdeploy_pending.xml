@@ -1,0 +1,116 @@
+<step title="BackgroundTrace" date="2026-03-13T22:14:39.186" instance="bf6391" url="/api/zipdeploy" method="POST" >
+  <step title="Cleanup Xml Logs" date="2026-03-13T22:14:39.192" /><!-- duration: 10ms -->
+  <step title="Creating temporary deployment - FetchDeploymentManager" date="2026-03-13T22:14:39.260" /><!-- duration: 3ms -->
+  <step title="Creating temporary deployment" date="2026-03-13T22:14:39.276" /><!-- duration: 76ms -->
+  <step title="Performing fetch based deployment" date="2026-03-13T22:14:39.395" >
+    <step title="Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/ca8ed8c2-edfa-4a72-8eb2-ec1aeb369a7a.zip (36.16 MB) to /tmp/zipdeploy/extracted" date="2026-03-13T22:14:40.607" >
+      <step title="ChmodRecursive Process exited with total time taken in ms: 47" date="2026-03-13T22:14:41.019" /><!-- duration: 4ms -->
+    </step><!-- duration: 420ms -->
+    <step title="Deployment timer started" date="2026-03-13T22:14:43.051" >
+      <step title="DeploymentManager.Deploy(id:cbf104f3-551d-4692-8fb8-d7637df54403)" date="2026-03-13T22:14:43.092" >
+        <step title="Collecting changeset information" date="2026-03-13T22:14:43.135" /><!-- duration: 108ms -->
+        <step title="Updating submodules" date="2026-03-13T22:14:43.253" /><!-- duration: 1265ms -->
+        <step title="Determining deployment builder" date="2026-03-13T22:14:44.827" >
+          <step title="Builder is OryxBuilder" date="2026-03-13T22:14:44.844" /><!-- duration: 12ms -->
+        </step><!-- duration: 32ms -->
+        <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-13T22:14:44.921" >
+          <step title="PreDeployment: context.OutputPath /home/site/wwwroot" date="2026-03-13T22:14:45.062" >
+            <step title="Building" date="2026-03-13T22:14:45.235" >
+              <step title="Executing external process" date="2026-03-13T22:14:46.107" type="process" path="bash" arguments="-c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" >
+                <step title="Process dump" date="2026-03-13T22:15:34.841" exitCode="1" type="processOutput" /><!-- duration: 11ms -->
+              </step><!-- duration: 48752ms -->
+              <step title="Error occurred" date="2026-03-13T22:15:34.889" type="error" text="npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 50ms
+error during build:
+Could not resolve entry module &quot;index.html&quot;.
+    at getRollupError (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135" /><!-- duration: 12ms -->
+              <step title="Error occurred" date="2026-03-13T22:15:34.908" type="error" text="npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 50ms
+error during build:
+Could not resolve entry module &quot;index.html&quot;.
+    at getRollupError (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.OryxBuilder.RunBuildCommand(IOryxArguments args, DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 295
+   at Kudu.Core.Deployment.Generator.OryxBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 136
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771" /><!-- duration: 5ms -->
+              <step title="Using GenericDeploymentLogParser" date="2026-03-13T22:15:35.204" /><!-- duration: 49ms -->
+              <step title="Purge deployment items" date="2026-03-13T22:15:36.934" >
+                <step title="Remove e8cf5307-, Failed, received at 03/13/2026 22:12:32" date="2026-03-13T22:15:37.000" /><!-- duration: 4ms -->
+              </step><!-- duration: 74ms -->
+            </step><!-- duration: 51787ms -->
+          </step><!-- duration: 51965ms -->
+          <step title="Error occurred" date="2026-03-13T22:15:37.030" type="error" text="npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 50ms
+error during build:
+Could not resolve entry module &quot;index.html&quot;.
+    at getRollupError (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.OryxBuilder.RunBuildCommand(IOryxArguments args, DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 295
+   at Kudu.Core.Deployment.Generator.OryxBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 136
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840" /><!-- duration: 4ms -->
+          <step title="Cleaning up temp files" date="2026-03-13T22:15:37.104" /><!-- duration: 1629ms -->
+          <step title="Cleaning up temp files" date="2026-03-13T22:15:38.738" /><!-- duration: 515ms -->
+          <step title="Error occurred" date="2026-03-13T22:15:39.297" type="error" text="npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 50ms
+error during build:
+Could not resolve entry module &quot;index.html&quot;.
+    at getRollupError (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.OryxBuilder.RunBuildCommand(IOryxArguments args, DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 295
+   at Kudu.Core.Deployment.Generator.OryxBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 136
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 13ms -->
+        </step><!-- duration: 54392ms -->
+        <step title="Reloading status file with latest updates" date="2026-03-13T22:15:39.376" >
+          <step title="WebHooksManager.PublishEventAsync: PostDeployment" date="2026-03-13T22:15:39.382" /><!-- duration: 54ms -->
+        </step><!-- duration: 87ms -->
+        <step title="Error occurred" date="2026-03-13T22:15:39.467" type="error" text="npm warn deprecated multer@1.4.5-lts.2: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+✗ Build failed in 50ms
+error during build:
+Could not resolve entry module &quot;index.html&quot;.
+    at getRollupError (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at ModuleLoader.loadEntryModule (file:///tmp/8de814dee9a8b77/node_modules/rollup/dist/es/shared/node-entry.js:21731:20)
+    at async Promise.all (index 0)
+/bin/bash -c &quot;oryx build /tmp/zipdeploy/extracted -o /home/site/wwwroot --platform nodejs --platform-version 22 -p virtualenv_name= --log-file /tmp/build-debug.log  -i /tmp/8de814dee9a8b77 -p compress_node_modules=tar-gz | tee /tmp/oryx-build.log ; exit $PIPESTATUS &quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.OryxBuilder.RunBuildCommand(IOryxArguments args, DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 295
+   at Kudu.Core.Deployment.Generator.OryxBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OryxBuilder.cs:line 136
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 4ms -->
+        <step title="Marking deployment as failed and cleaning up the temp deployment" date="2026-03-13T22:15:39.534" /><!-- duration: 22ms -->
+      </step><!-- duration: 56635ms -->
+      <step title="Error occurred" date="2026-03-13T22:15:39.790" type="error" text="One or more errors occurred. (Deployment failed)" stackTrace="   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)
+   at System.Threading.Tasks.Task.Wait()
+   at Kudu.Core.Deployment.FetchDeploymentManager.&lt;&gt;c__DisplayClass22_1.&lt;PerformBackgroundDeployment&gt;b__3() in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 414
+   at Kudu.Contracts.Infrastructure.LockExtensions.TryLockOperation(IOperationLock lockObj, Action operation, String operationName, TimeSpan timeout) in /tmp/KuduLite/Kudu.Contracts/Infrastructure/LockExtensions.cs:line 34
+   at Kudu.Contracts.Infrastructure.LockExtensions.LockOperation(IOperationLock lockObj, Action operation, String operationName, TimeSpan timeout) in /tmp/KuduLite/Kudu.Contracts/Infrastructure/LockExtensions.cs:line 46
+   at Kudu.Core.Deployment.FetchDeploymentManager.&lt;&gt;c__DisplayClass22_0.&lt;PerformBackgroundDeployment&gt;b__1() in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 393" innerText="Deployment failed" innerStackTrace="   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 307
+   at Kudu.Core.Deployment.FetchDeploymentManager.PerformDeployment(DeploymentInfoBase deploymentInfo, IDisposable tempDeployment, ChangeSet tempChangeSet, DeployStatusApiResult updateStatusObj) in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 230" /><!-- duration: 6ms -->
+    </step><!-- duration: 56749ms -->

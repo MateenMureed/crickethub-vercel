@@ -1,0 +1,2 @@
+D:\a\_work\1\s\build_scripts\windows\artifacts\cli\Lib\site-packages\cryptography/hazmat/backends/openssl/backend.py:8: UserWarning: You are using cryptography on a 32-bit Python on a 64-bit Windows Operating System. Cryptography will be significantly faster if you switch to using a 64-bit Python.
+ERROR: An error occurred during deployment. Status Code: 400,  Please visit https://crickethub.scm.azurewebsites.net/api/deployments/latest to get more information about your deployment

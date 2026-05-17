@@ -1,0 +1,776 @@
+<step title="Incoming Request" date="2026-03-14T20:08:25.935" instance="b11815" url="/api/publish?type=zip&amp;clean=True" method="POST" type="request" pid="831,1,15" Accept="*/*" Host="cricket-android.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Cookie="ARRAffinity=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60; ARRAffinitySameSite=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60" Content-Length="37930053" x-ms-client-request-id="769a70d5-1fe1-11f1-ab30-dcfb4820b033" x-ms-artifact-checksum="59bc510b7afcc8a1fe01e9e6e33402ed61c145d62810d7b9e33d80fe4e098ddd" X-ARR-LOG-ID="769a70d5-1fe1-11f1-ab30-dcfb4820b033" CLIENT-IP="39.34.138.14:58008" X-SITE-DEPLOYMENT-ID="cricket-android" WAS-DEFAULT-HOSTNAME="cricket-android.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=zip&amp;clean=True" X-Client-IP="39.34.138.14" X-Client-Port="58008" >
+  <step title="OneDeploy" date="2026-03-14T20:08:26.107" >
+    <step title="None repository commit" date="2026-03-14T20:08:26.137" >
+      <step title="Commit id: dd0f106f-8ca0-4722-a71e-4e8355ba33a6" date="2026-03-14T20:08:26.145" Message="N/A" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 7ms -->
+    </step><!-- duration: 21ms -->
+    <step title="Starting PushDeployAsync" date="2026-03-14T20:08:26.164" /><!-- duration: 6ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/df878117-f4d2-481c-9faa-c6d813151139.zip" date="2026-03-14T20:08:26.192" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/df878117-f4d2-481c-9faa-c6d813151139.zip" date="2026-03-14T20:08:26.199" /><!-- duration: 9ms -->
+    </step><!-- duration: 13343ms -->
+    <step title="Attempting to fetch target branch HEAD" date="2026-03-14T20:08:39.558" /><!-- duration: 6ms -->
+    <step title="Acquiring Deployment Lock" date="2026-03-14T20:08:39.574" /><!-- duration: 11ms -->
+    <step title="Acquired Deployment Lock" date="2026-03-14T20:08:39.636" /><!-- duration: 6ms -->
+    <step title="Performing fetch based deployment" date="2026-03-14T20:08:39.656" >
+      <step title="Creating temporary deployment" date="2026-03-14T20:08:39.663" /><!-- duration: 92ms -->
+      <step title="Releasing Deployment Lock" date="2026-03-14T20:08:40.986" /><!-- duration: 11ms -->
+      <step title="Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/df878117-f4d2-481c-9faa-c6d813151139.zip (36.17 MB) to /tmp/zipdeploy/extracted" date="2026-03-14T20:08:41.067" >
+        <step title="ChmodRecursive Process exited with total time taken in ms: 63" date="2026-03-14T20:08:41.685" /><!-- duration: 19ms -->
+      </step><!-- duration: 656ms -->
+      <step title="None repository commit" date="2026-03-14T20:08:41.735" >
+        <step title="Commit id: dd0f106f-8ca0-4722-a71e-4e8355ba33a6" date="2026-03-14T20:08:41.741" Message="OneDeploy" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 6ms -->
+      </step><!-- duration: 18ms -->
+      <step title="Deployment timer started" date="2026-03-14T20:08:43.773" >
+        <step title="DeploymentManager.Deploy(id:dd0f106f-8ca0-4722-a71e-4e8355ba33a6)" date="2026-03-14T20:08:43.783" >
+          <step title="Collecting changeset information" date="2026-03-14T20:08:43.812" /><!-- duration: 112ms -->
+          <step title="Updating submodules" date="2026-03-14T20:08:43.934" /><!-- duration: 1198ms -->
+          <step title="Determining deployment builder" date="2026-03-14T20:08:45.466" >
+            <step title="Builder is OneDeployBuilder" date="2026-03-14T20:08:45.489" /><!-- duration: 6ms -->
+          </step><!-- duration: 35ms -->
+          <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-14T20:08:45.566" >
+            <step title="PreDeployment: context.OutputPath /home/site/wwwroot" date="2026-03-14T20:08:45.747" >
+              <step title="Building" date="2026-03-14T20:08:45.958" >
+                <step title="Executing external process" date="2026-03-14T20:08:46.879" type="process" path="starter.sh" arguments="/opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ True False  " >
+                  <step title="Process dump" date="2026-03-14T20:08:57.432" exitCode="123" type="processOutput" /><!-- duration: 7ms -->
+                </step><!-- duration: 10567ms -->
+                <step title="Error occurred" date="2026-03-14T20:08:57.662" type="error" text="rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+/opt/Kudu/Scripts/starter.sh /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ True False  " stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135" /><!-- duration: 19ms -->
+                <step title="Warning" date="2026-03-14T20:08:57.698" type="warning" text="Exception in parallel rsync: ExitCode: 123, Output: Run rsync from: /tmp/zipdeploy/extracted/ to: /home/site/wwwroot/ in 8 parallel threads
+Delete options: clean=True, use manifest=False, directory to ignore=
+Prev manifest = /tmp/tmpoAghNs.tmp and next /tmp/tmpoAghNs.tmp
+Cleaning up /tmp//filelist.txt and /tmp//splits
+Creating a list of all files at /tmp//filelist.txt
+No directory to exclude.
+Created /tmp//filelist.txt. Total number of files to be synced = 50.
+Created batches from the list of files. Processing 7 files in each thread
+Running rsync for filelist /tmp//splits/split.aa from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ab from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ad from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ac from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.af from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ag from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ah from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ae from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 2.10M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 320
+Total bytes received: 12
+
+sent 320 bytes  received 12 bytes  664.00 bytes/sec
+total size is 2.10M  speedup is 6,338.17
+Attempt 1: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 2.15M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 322
+Total bytes received: 12
+
+sent 322 bytes  received 12 bytes  668.00 bytes/sec
+total size is 2.15M  speedup is 6,431.27
+Attempt 1: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 3.49M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 363
+Total bytes received: 12
+
+sent 363 bytes  received 12 bytes  750.00 bytes/sec
+total size is 3.49M  speedup is 9,314.81
+Attempt 1: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 3.32M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.038 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 378
+Total bytes received: 12
+
+sent 378 bytes  received 12 bytes  780.00 bytes/sec
+total size is 3.32M  speedup is 8,510.01
+
+Number of files: 1 (reg: 1)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 12.87K bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 149
+Total bytes received: 12
+
+sent 149 bytes  received 12 bytes  322.00 bytes/sec
+total size is 12.87K  speedup is 79.94
+Attempt 1: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 8.28M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 404
+Total bytes received: 12
+
+sent 404 bytes  received 12 bytes  832.00 bytes/sec
+total size is 8.28M  speedup is 19,904.46
+Attempt 1: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+Attempt 1: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 1 (reg: 1)
+Number of deleted files: 0
+Number of regular files transferred: 1
+Total file size: 11.05M bytes
+Total transferred file size: 887 bytes
+Literal data: 887 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.029 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 801
+Total bytes received: 35
+
+sent 801 bytes  received 35 bytes  1.67K bytes/sec
+total size is 11.05M  speedup is 13,216.67
+Attempt 1: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+
+Number of files: 1 (reg: 1)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 12.87K bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 149
+Total bytes received: 12
+
+sent 149 bytes  received 12 bytes  322.00 bytes/sec
+total size is 12.87K  speedup is 79.94
+
+Number of files: 7 (reg: 7)
+Number of created files: 1 (reg: 1)
+Number of deleted files: 0
+Number of regular files transferred: 1
+Total file size: 8.81M bytes
+Total transferred file size: 125.42K bytes
+Literal data: 125.42K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 30.65K
+Total bytes received: 35
+
+sent 30.65K bytes  received 35 bytes  61.36K bytes/sec
+total size is 8.81M  speedup is 287.13
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 2.15M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 322
+Total bytes received: 12
+
+sent 322 bytes  received 12 bytes  668.00 bytes/sec
+total size is 2.15M  speedup is 6,431.27
+Attempt 2: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+Attempt 1: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+Attempt 2: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 2.10M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 320
+Total bytes received: 12
+
+sent 320 bytes  received 12 bytes  664.00 bytes/sec
+total size is 2.10M  speedup is 6,338.17
+Attempt 2: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 8.28M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 404
+Total bytes received: 12
+
+sent 404 bytes  received 12 bytes  832.00 bytes/sec
+total size is 8.28M  speedup is 19,904.46
+Attempt 2: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 3.49M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.055 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 363
+Total bytes received: 12
+
+sent 363 bytes  received 12 bytes  250.00 bytes/sec
+total size is 3.49M  speedup is 9,314.81
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 3.32M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 378
+Total bytes received: 12
+
+sent 378 bytes  received 12 bytes  260.00 bytes/sec
+total size is 3.32M  speedup is 8,510.01
+Attempt 2: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+Attempt 2: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 8.81M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.009 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 366
+Total bytes received: 19
+
+sent 366 bytes  received 19 bytes  770.00 bytes/sec
+total size is 8.81M  speedup is 22,881.73
+Attempt 2: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 11.05M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 352
+Total bytes received: 19
+
+sent 352 bytes  received 19 bytes  247.33 bytes/sec
+total size is 11.05M  speedup is 29,782.04
+Attempt 2: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+An error has occurred during web site deployment.
+Rsync failed in 2 seconds, Error: rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7], Kudu.Core.Infrastructure.CommandLineException: rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\server.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\startup.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242251784-l4bw7aglb.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951903-fcov5oc2b.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953680-owrxn2g4t.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046659-yvvex309w.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046800-zqhjn7foy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-03-47-996Z.json&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-B8f2rXD2.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\index.html&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\azureStateStore.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\database.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242158605-ay7qtoq89.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553492-eu4r0tret.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256291233-t784jaihd.png&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\index-BPSwz2je.css&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-33-01-952Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-14T11-42-55-053Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250948791-jjn3r13iy.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256274072-pa0dn3ptf.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328046994-s6mhgt05f.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145196-xx08jabkh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/dist\assets\html2canvas.esm-QH1iLAAe.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.backup.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\data.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-08-57-305Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773244615108-dhkdcdy7z.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553489-3ud2optjh.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996051-d4h5pxeug.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\mediaStorage.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T15-09-20-319Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-45-23-804Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-55-19-415Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242279673-6dv4yk092.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250951966-xfgjxtn8g.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996091-ebetu2uq8.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T18-32-29-350Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217936-wdpemwg7j.jpeg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250952336-mr87ij97e.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773256254721-umgz6sj5o.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773328145304-6f9ro7843.png&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773426996100-6lj1mc3y0.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\runtimePaths.js&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\snapshots\data-2026-03-13T19-23-01-491Z.json&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773242217965-gungby0rf.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773248553495-pqkj5cqgo.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773250953711-ofmdbcq8r.jpg&quot;: Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat &quot;/home/site/wwwroot/server\uploads\1773414704637-f4gx7llgh.jpg&quot;: Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+/opt/Kudu/Scripts/starter.sh /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ True False  
+   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 70" /><!-- duration: 9ms -->
+                <step title="Generating deployment script" date="2026-03-14T20:08:57.715" >
+                  <step title="Executing external process" date="2026-03-14T20:08:57.791" type="process" path="starter.sh" arguments="&quot;/opt/Kudu/node_modules/.bin/kuduscript&quot; -y --no-dot-deployment -r &quot;/tmp/zipdeploy/extracted&quot; -o &quot;/home/site/deployments/tools&quot; --basic --sitePath &quot;/tmp/zipdeploy/extracted&quot;" /><!-- duration: 436ms -->
+                  <step title="Saved cached version of the deployment script for command -y --no-dot-deployment -r &quot;/tmp/zipdeploy/extracted&quot; -o &quot;/home/site/deployments/tools&quot; --basic --sitePath &quot;/tmp/zipdeploy/extracted&quot;" date="2026-03-14T20:08:58.294" /><!-- duration: 5ms -->
+                </step><!-- duration: 591ms -->
+                <step title="Executing external process" date="2026-03-14T20:08:58.522" type="process" path="starter.sh" arguments="&quot;/home/site/deployments/tools/deploy.sh&quot;" >
+                  <step title="Process dump" date="2026-03-14T20:08:59.140" exitCode="1" type="processOutput" /><!-- duration: 6ms -->
+                </step><!-- duration: 629ms -->
+                <step title="Error occurred" date="2026-03-14T20:08:59.199" type="error" text="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135" /><!-- duration: 11ms -->
+                <step title="Error occurred" date="2026-03-14T20:08:59.249" type="error" text="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 96
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 66
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771" /><!-- duration: 27ms -->
+              </step><!-- duration: 13711ms -->
+            </step><!-- duration: 13945ms -->
+            <step title="Error occurred" date="2026-03-14T20:08:59.698" type="error" text="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 96
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 66
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840" /><!-- duration: 7ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T20:08:59.800" /><!-- duration: 7ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T20:08:59.812" /><!-- duration: 514ms -->
+            <step title="Error occurred" date="2026-03-14T20:09:00.447" type="error" text="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 96
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 66
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 6ms -->
+          </step><!-- duration: 14922ms -->
+          <step title="Reloading status file with latest updates" date="2026-03-14T20:09:00.551" >
+            <step title="WebHooksManager.PublishEventAsync: PostDeployment" date="2026-03-14T20:09:00.559" /><!-- duration: 173ms -->
+          </step><!-- duration: 189ms -->
+          <step title="Error occurred" date="2026-03-14T20:09:00.746" type="error" text="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 96
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 66
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 7ms -->
+          <step title="Marking deployment as failed and cleaning up the temp deployment" date="2026-03-14T20:09:00.820" /><!-- duration: 6ms -->
+        </step><!-- duration: 17219ms -->
+      </step><!-- duration: 17243ms -->
+      <step title="Error occurred" date="2026-03-14T20:09:01.068" type="error" text="Deployment failed" stackTrace="   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 307
+   at Kudu.Core.Deployment.FetchDeploymentManager.PerformDeployment(DeploymentInfoBase deploymentInfo, IDisposable tempDeployment, ChangeSet tempChangeSet, DeployStatusApiResult updateStatusObj) in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 230
+   at Kudu.Core.Deployment.FetchDeploymentManager.&lt;&gt;c__DisplayClass17_0.&lt;&lt;FetchDeploy&gt;b__0&gt;d.MoveNext() in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 131
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.FetchDeploymentManager.FetchDeploy(DeploymentInfoBase deployInfo, Boolean asyncRequested, Uri requestUri, String targetBranch) in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 124
+   at Kudu.Services.Deployment.PushDeploymentController.PushDeployAsync(ArtifactDeploymentInfo deploymentInfo, Boolean isAsync, HttpContext context, JObject requestJson) in /tmp/KuduLite/Kudu.Services/Deployment/PushDeploymentController.cs:line 802
+   at Kudu.Services.Deployment.PushDeploymentController.OneDeploy(String type, Boolean async, String path, Nullable`1 restart, Nullable`1 clean, Boolean ignoreStack, Boolean trackDeploymentProgress, Boolean trackStatus, Boolean reset) in /tmp/KuduLite/Kudu.Services/Deployment/PushDeploymentController.cs:line 624
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeInnerFilterAsync&gt;g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeNextResourceFilter&gt;g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Kudu.Services.Web.Startup.&lt;&gt;c.&lt;&lt;Configure&gt;b__11_7&gt;d.MoveNext() in /tmp/KuduLite/Kudu.Services.Web/Startup.cs:line 428
+--- End of stack trace from previous location ---
+   at Kudu.Services.Web.Tracing.TraceMiddleware.Invoke(HttpContext context) in /tmp/KuduLite/Kudu.Services.Web/Tracing/TraceMiddleware.cs:line 101" innerText="
+/opt/Kudu/Scripts/starter.sh &quot;/home/site/deployments/tools/deploy.sh&quot;" innerStackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.GeneratorSiteBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/GeneratorSiteBuilder.cs:line 96
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 66
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 18ms -->
+      <step title="Incoming Request" date="2026-03-14T20:09:01.138" url="/Error?type=zip&amp;clean=True" method="POST" type="request" pid="831,1,7" Accept="*/*" Host="cricket-android.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Cookie="ARRAffinity=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60; ARRAffinitySameSite=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60" Content-Length="37930053" x-ms-client-request-id="769a70d5-1fe1-11f1-ab30-dcfb4820b033" x-ms-artifact-checksum="59bc510b7afcc8a1fe01e9e6e33402ed61c145d62810d7b9e33d80fe4e098ddd" X-ARR-LOG-ID="769a70d5-1fe1-11f1-ab30-dcfb4820b033" CLIENT-IP="39.34.138.14:58008" X-SITE-DEPLOYMENT-ID="cricket-android" WAS-DEFAULT-HOSTNAME="cricket-android.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=zip&amp;clean=True" X-Client-IP="39.34.138.14" X-Client-Port="58008" >
+        <step title="Outgoing response" date="2026-03-14T20:09:01.224" type="response" statusCode="400" statusText="BadRequest" /><!-- duration: 6ms -->
+      </step><!-- duration: 114ms -->

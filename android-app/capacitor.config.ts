@@ -1,20 +1,23 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
-const appUrl = process.env.CAPACITOR_SERVER_URL || '';
-
 const config: CapacitorConfig = {
   appId: 'com.crickethub.app',
   appName: 'CricketHub',
   webDir: 'dist',
-  server: appUrl
-    ? {
-        url: appUrl,
-        cleartext: false,
-        androidScheme: 'https',
-      }
-    : {
-        androidScheme: 'https',
-      },
+  android: {
+    allowMixedContent: true,
+    webContentsDebuggingEnabled: false,
+  },
+  server: {
+    androidScheme: 'https',
+  },
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+      androidScaleType: 'CENTER_CROP',
+      backgroundColor: '#050b16',
+    },
+  },
 };
 
 export default config;

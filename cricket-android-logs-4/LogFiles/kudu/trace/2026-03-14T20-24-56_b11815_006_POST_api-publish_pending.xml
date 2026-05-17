@@ -1,0 +1,49 @@
+<step title="Incoming Request" date="2026-03-14T20:24:56.235" instance="b11815" url="/api/publish?type=zip&amp;clean=True" method="POST" type="request" pid="831,1,15" Accept="*/*" Host="cricket-android.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Cookie="ARRAffinity=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60; ARRAffinitySameSite=b11815bfc5cb44db8f4a959aad340e8806d0243e164bbab1d415f6647f4f1a60" Content-Length="38096778" x-ms-client-request-id="d2430222-1fe3-11f1-97a7-dcfb4820b033" x-ms-artifact-checksum="fa142ea16774c5e499b7eb82202705379b07594ea626da9f41302562fcac7d0c" X-ARR-LOG-ID="d2430222-1fe3-11f1-97a7-dcfb4820b033" CLIENT-IP="39.34.138.14:58020" X-SITE-DEPLOYMENT-ID="cricket-android" WAS-DEFAULT-HOSTNAME="cricket-android.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=zip&amp;clean=True" X-Client-IP="39.34.138.14" X-Client-Port="58020" >
+  <step title="OneDeploy" date="2026-03-14T20:24:56.289" >
+    <step title="Starting PushDeployAsync" date="2026-03-14T20:24:56.328" /><!-- duration: 11ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/d5ace46d-3cff-4f85-84a7-048d74b0c2c1.zip" date="2026-03-14T20:24:56.390" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/d5ace46d-3cff-4f85-84a7-048d74b0c2c1.zip" date="2026-03-14T20:24:56.402" /><!-- duration: 25ms -->
+    </step><!-- duration: 15180ms -->
+    <step title="Attempting to fetch target branch HEAD" date="2026-03-14T20:25:11.601" /><!-- duration: 4ms -->
+    <step title="Acquiring Deployment Lock" date="2026-03-14T20:25:11.610" /><!-- duration: 17ms -->
+    <step title="Acquired Deployment Lock" date="2026-03-14T20:25:11.723" /><!-- duration: 7ms -->
+    <step title="Performing fetch based deployment" date="2026-03-14T20:25:11.740" >
+      <step title="Creating temporary deployment" date="2026-03-14T20:25:11.745" /><!-- duration: 80ms -->
+      <step title="Releasing Deployment Lock" date="2026-03-14T20:25:13.016" /><!-- duration: 18ms -->
+      <step title="Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/d5ace46d-3cff-4f85-84a7-048d74b0c2c1.zip (36.33 MB) to /tmp/zipdeploy/extracted" date="2026-03-14T20:25:13.080" >
+        <step title="ChmodRecursive Process exited with total time taken in ms: 125" date="2026-03-14T20:25:15.530" /><!-- duration: 7ms -->
+      </step><!-- duration: 2460ms -->
+      <step title="None repository commit" date="2026-03-14T20:25:15.550" >
+        <step title="Commit id: ed853854-7f94-4ac9-8c25-6856946abfba" date="2026-03-14T20:25:15.554" Message="OneDeploy" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 5ms -->
+      </step><!-- duration: 13ms -->
+      <step title="Deployment timer started" date="2026-03-14T20:25:17.577" >
+        <step title="DeploymentManager.Deploy(id:ed853854-7f94-4ac9-8c25-6856946abfba)" date="2026-03-14T20:25:17.585" >
+          <step title="Collecting changeset information" date="2026-03-14T20:25:17.614" /><!-- duration: 85ms -->
+          <step title="Updating submodules" date="2026-03-14T20:25:17.706" /><!-- duration: 1156ms -->
+          <step title="Determining deployment builder" date="2026-03-14T20:25:19.148" >
+            <step title="Builder is OneDeployBuilder" date="2026-03-14T20:25:19.163" /><!-- duration: 4ms -->
+          </step><!-- duration: 23ms -->
+          <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-14T20:25:19.231" >
+            <step title="PreDeployment: context.OutputPath /home/site/wwwroot" date="2026-03-14T20:25:19.362" >
+              <step title="Building" date="2026-03-14T20:25:19.519" >
+                <step title="Executing external process" date="2026-03-14T20:25:20.387" type="process" path="starter.sh" arguments="/opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ True False  " >
+                  <step title="Cpu: rsync(1006,0.000s)+rsync(1005,1.600s)+rsync(1004,0.010s)+parallel_rsync.sh(963,0.020s)=total(1.630s)" date="2026-03-14T20:26:29.072" /><!-- duration: 66ms -->
+                  <step title="starter.sh: no io activity for 60s, prev-cpu=-1.000s, current-cpu=1.630s" date="2026-03-14T20:26:29.171" /><!-- duration: 24ms -->
+                </step><!-- duration: 87507ms -->
+                <step title="Modified file to trigger a restart of the app container." date="2026-03-14T20:26:48.426" /><!-- duration: 4ms -->
+                <step title="Skip function trigger and logicapp sync because function is not enabled." date="2026-03-14T20:26:48.447" /><!-- duration: 4ms -->
+                <step title="Purge deployment items" date="2026-03-14T20:26:49.330" >
+                  <step title="Remove dd0f106f-, Failed, received at 03/14/2026 20:08:43" date="2026-03-14T20:26:49.428" /><!-- duration: 18ms -->
+                </step><!-- duration: 126ms -->
+              </step><!-- duration: 90068ms -->
+            </step><!-- duration: 90235ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T20:26:49.601" /><!-- duration: 15ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T20:26:49.655" /><!-- duration: 569ms -->
+            <step title="Reloading status file with latest updates" date="2026-03-14T20:26:50.304" >
+              <step title="WebHooksManager.PublishEventAsync: PostDeployment" date="2026-03-14T20:26:50.382" /><!-- duration: 361ms -->
+            </step><!-- duration: 448ms -->
+            <step title="Cleaning up temporary deployment - fetch deployment was successful" date="2026-03-14T20:26:50.771" /><!-- duration: 10ms -->
+          </step><!-- duration: 91690ms -->
+        </step><!-- duration: 93519ms -->
+        <step title="Outgoing response" date="2026-03-14T20:26:51.334" type="response" statusCode="200" statusText="OK" /><!-- duration: 11ms -->
+      </step><!-- duration: 93778ms -->

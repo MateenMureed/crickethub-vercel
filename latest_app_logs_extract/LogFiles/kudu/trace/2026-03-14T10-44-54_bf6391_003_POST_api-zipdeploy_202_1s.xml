@@ -1,0 +1,17 @@
+<step title="Incoming Request" date="2026-03-14T10:44:54.997" instance="bf6391" url="/api/zipdeploy?isAsync=true" method="POST" type="request" pid="832,1,15" Accept="*/*" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Content-Length="176900" x-ms-client-request-id="d39527a1-1f92-11f1-8217-dcfb4820b033" x-ms-artifact-checksum="b6941da807acec625ee84756e6f108c19fe099c79fab0db762cf7170d47c5d3a" X-ARR-LOG-ID="d39527a1-1f92-11f1-8217-dcfb4820b033" CLIENT-IP="39.34.138.14:58054" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/zipdeploy?isAsync=true" X-Client-IP="39.34.138.14" X-Client-Port="58054" >
+  <step title="ZipPushDeploy" date="2026-03-14T10:44:55.070" >
+    <step title="ZipDeploy. Extract zip." date="2026-03-14T10:44:55.088" /><!-- duration: 12ms -->
+    <step title="None repository commit" date="2026-03-14T10:44:55.105" >
+      <step title="Commit id: 08ddeae2-9c96-4ba6-83aa-fca6498eddb1" date="2026-03-14T10:44:55.109" Message="N/A" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 3ms -->
+    </step><!-- duration: 11ms -->
+    <step title="Starting PushDeployAsync" date="2026-03-14T10:44:55.120" /><!-- duration: 4ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/d95fb34f-0ad3-4c71-945f-eb376962f5f5.zip" date="2026-03-14T10:44:55.154" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/d95fb34f-0ad3-4c71-945f-eb376962f5f5.zip" date="2026-03-14T10:44:55.160" /><!-- duration: 10ms -->
+    </step><!-- duration: 97ms -->
+    <step title="Start deployment in the background" date="2026-03-14T10:44:55.269" >
+      <step title="Acquiring Deployment Lock" date="2026-03-14T10:44:55.283" /><!-- duration: 20ms -->
+      <step title="Acquired Deployment Lock" date="2026-03-14T10:44:55.393" /><!-- duration: 5ms -->
+    </step><!-- duration: 221ms -->
+  </step><!-- duration: 430ms -->
+  <step title="Outgoing response" date="2026-03-14T10:44:55.512" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 4ms -->
+</step><!-- duration: 524ms -->

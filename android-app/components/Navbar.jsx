@@ -21,7 +21,10 @@ export default function Navbar() {
 
   return (
     <nav className="topbar">
-      <Link to="/" className="topbar-logo">Cricket<span>Hub</span></Link>
+      <Link to="/" className="topbar-logo">
+        <img src="/crickethub-logo.svg" alt="CricketHub" className="topbar-logo-mark" />
+        <span>Cricket<span>Hub</span></span>
+      </Link>
       <div className="topbar-actions">
         <button className="icon-btn" onClick={toggleTheme} title="Toggle theme">
           {theme === 'dark' ? '☀️' : '🌙'}

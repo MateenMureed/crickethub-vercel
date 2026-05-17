@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crickethub.local/schemas/cosmos-state.schema.json",
+  "title": "CricketHub Cosmos DB State Document",
+  "type": "object",
+  "required": ["id", "pk", "state", "updatedAt"],
+  "properties": {
+    "id": { "const": "state-crickethub" },
+    "pk": { "const": "crickethub" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "state": {
+      "type": "object",
+      "required": [
+        "users",
+        "leagues",
+        "sponsors",
+        "teams",
+        "players",
+        "matches",
+        "innings",
+        "ball_events",
+        "batting_scores",
+        "bowling_scores",
+        "points_table",
+        "_counters"
+      ],
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "username", "password"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "username": { "type": "string", "minLength": 1 },
+              "password": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "leagues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string", "minLength": 1 },
+              "city": { "type": ["string", "null"] },
+              "venue": { "type": ["string", "null"] },
+              "organizer": { "type": ["string", "null"] },
+              "logo": { "type": ["string", "null"] },
+              "season": { "type": ["string", "null"] },
+              "format": { "type": ["string", "null"], "default": "round-robin" },
+              "overs_per_innings": { "type": ["integer", "null"], "minimum": 1, "default": 20 },
+              "status": { "type": "string", "enum": ["upcoming", "active", "completed", "cancelled"], "default": "upcoming" },
+              "created_at": { "type": ["string", "null"], "format": "date-time" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "sponsors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "league_id", "name"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "league_id": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string", "minLength": 1 },
+              "logo": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          }
+        },
+        "teams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "league_id", "name"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "league_id": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string", "minLength": 1 },
+              "logo": { "type": ["string", "null"] },
+              "captain_name": { "type": ["string", "null"] },
+              "captain_photo": { "type": ["string", "null"] },
+              "captain_id": { "type": ["integer", "null"], "minimum": 1 },
+              "squad_banner": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          }
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "team_id", "name"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "team_id": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string", "minLength": 1 },
+              "photo": { "type": ["string", "null"] },
+              "role": { "type": "string", "default": "batsman" },
+              "jersey_number": { "type": ["integer", "null"], "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "matches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "league_id", "team_a_id", "team_b_id", "status"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "league_id": { "type": "integer", "minimum": 1 },
+              "team_a_id": { "type": "integer", "minimum": 1 },
+              "team_b_id": { "type": "integer", "minimum": 1 },
+              "match_number": { "type": ["integer", "null"], "minimum": 1 },
+              "date": { "type": ["string", "null"] },
+              "time": { "type": ["string", "null"] },
+              "venue": { "type": ["string", "null"] },
+              "status": { "type": "string", "enum": ["upcoming", "live", "completed", "cancelled"] },
+              "toss_winner_id": { "type": ["integer", "null"], "minimum": 1 },
+              "toss_decision": { "type": ["string", "null"], "enum": ["bat", "bowl", null] },
+              "result_summary": { "type": ["string", "null"] },
+              "winner_id": { "type": ["integer", "null"], "minimum": 1 },
+              "man_of_match_id": { "type": ["integer", "null"], "minimum": 1 },
+              "overs_per_innings": { "type": ["integer", "null"], "minimum": 1 },
+              "is_super_over": { "type": ["integer", "boolean"], "default": 0 },
+              "parent_match_id": { "type": ["integer", "null"], "minimum": 1 },
+              "target_runs": { "type": ["integer", "null"], "minimum": 1 },
+              "points_awarded": { "type": ["integer", "boolean", "null"], "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "innings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "match_id", "batting_team_id", "bowling_team_id", "innings_number"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "match_id": { "type": "integer", "minimum": 1 },
+              "batting_team_id": { "type": "integer", "minimum": 1 },
+              "bowling_team_id": { "type": "integer", "minimum": 1 },
+              "innings_number": { "type": "integer", "enum": [1, 2] },
+              "total_runs": { "type": "integer", "minimum": 0, "default": 0 },
+              "total_wickets": { "type": "integer", "minimum": 0, "maximum": 10, "default": 0 },
+              "total_overs": { "type": "number", "minimum": 0, "default": 0 },
+              "total_balls": { "type": "integer", "minimum": 0, "default": 0 },
+              "extras_wides": { "type": "integer", "minimum": 0, "default": 0 },
+              "extras_noballs": { "type": "integer", "minimum": 0, "default": 0 },
+              "extras_byes": { "type": "integer", "minimum": 0, "default": 0 },
+              "extras_legbyes": { "type": "integer", "minimum": 0, "default": 0 },
+              "is_completed": { "type": ["integer", "boolean"], "default": 0 },
+              "striker_id": { "type": ["integer", "null"], "minimum": 1 },
+              "non_striker_id": { "type": ["integer", "null"], "minimum": 1 },
+              "current_bowler_id": { "type": ["integer", "null"], "minimum": 1 },
+              "last_over_bowler_id": { "type": ["integer", "null"], "minimum": 1 },
+              "target_runs": { "type": ["integer", "null"], "minimum": 1 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "ball_events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "innings_id", "over_number", "ball_number", "batsman_id", "bowler_id"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "innings_id": { "type": "integer", "minimum": 1 },
+              "over_number": { "type": "integer", "minimum": 0 },
+              "ball_number": { "type": "integer", "minimum": 1 },
+              "batsman_id": { "type": "integer", "minimum": 1 },
+              "bowler_id": { "type": "integer", "minimum": 1 },
+              "runs_scored": { "type": "integer", "minimum": 0, "default": 0 },
+              "is_boundary_four": { "type": ["integer", "boolean"], "default": 0 },
+              "is_boundary_six": { "type": ["integer", "boolean"], "default": 0 },
+              "extras_type": { "type": ["string", "null"], "enum": ["wide", "noball", "bye", "legbye", null] },
+              "extras_runs": { "type": "integer", "minimum": 0, "default": 0 },
+              "is_wicket": { "type": ["integer", "boolean"], "default": 0 },
+              "wicket_type": { "type": ["string", "null"] },
+              "dismissed_player_id": { "type": ["integer", "null"], "minimum": 1 },
+              "dismissed_end": { "type": ["string", "null"], "enum": ["striker", "non-striker", null] },
+              "incoming_batsman_id": { "type": ["integer", "null"], "minimum": 1 },
+              "total_runs": { "type": "integer", "minimum": 0, "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "batting_scores": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "innings_id", "player_id"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "innings_id": { "type": "integer", "minimum": 1 },
+              "player_id": { "type": "integer", "minimum": 1 },
+              "runs": { "type": "integer", "minimum": 0, "default": 0 },
+              "balls_faced": { "type": "integer", "minimum": 0, "default": 0 },
+              "fours": { "type": "integer", "minimum": 0, "default": 0 },
+              "sixes": { "type": "integer", "minimum": 0, "default": 0 },
+              "is_out": { "type": ["integer", "boolean"], "default": 0 },
+              "dismissal_type": { "type": ["string", "null"] },
+              "dismissal_bowler_id": { "type": ["integer", "null"], "minimum": 1 },
+              "dismissal_fielder_id": { "type": ["integer", "null"], "minimum": 1 },
+              "batting_order": { "type": "integer", "minimum": 0, "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "bowling_scores": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "innings_id", "player_id"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "innings_id": { "type": "integer", "minimum": 1 },
+              "player_id": { "type": "integer", "minimum": 1 },
+              "overs_bowled": { "type": "number", "minimum": 0, "default": 0 },
+              "balls_bowled": { "type": "integer", "minimum": 0, "default": 0 },
+              "maidens": { "type": "integer", "minimum": 0, "default": 0 },
+              "runs_conceded": { "type": "integer", "minimum": 0, "default": 0 },
+              "wickets": { "type": "integer", "minimum": 0, "default": 0 },
+              "wides": { "type": "integer", "minimum": 0, "default": 0 },
+              "noballs": { "type": "integer", "minimum": 0, "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "points_table": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "league_id", "team_id"],
+            "properties": {
+              "id": { "type": "integer", "minimum": 1 },
+              "league_id": { "type": "integer", "minimum": 1 },
+              "team_id": { "type": "integer", "minimum": 1 },
+              "matches_played": { "type": "integer", "minimum": 0, "default": 0 },
+              "wins": { "type": "integer", "minimum": 0, "default": 0 },
+              "losses": { "type": "integer", "minimum": 0, "default": 0 },
+              "ties": { "type": "integer", "minimum": 0, "default": 0 },
+              "no_results": { "type": "integer", "minimum": 0, "default": 0 },
+              "points": { "type": "integer", "minimum": 0, "default": 0 },
+              "nrr": { "type": "number", "default": 0 }
+            },
+            "additionalProperties": true
+          }
+        },
+        "_counters": {
+          "type": "object",
+          "required": ["users", "leagues", "sponsors", "teams", "players", "matches", "innings", "ball_events", "batting_scores", "bowling_scores", "points_table"],
+          "properties": {
+            "users": { "type": "integer", "minimum": 0 },
+            "leagues": { "type": "integer", "minimum": 0 },
+            "sponsors": { "type": "integer", "minimum": 0 },
+            "teams": { "type": "integer", "minimum": 0 },
+            "players": { "type": "integer", "minimum": 0 },
+            "matches": { "type": "integer", "minimum": 0 },
+            "innings": { "type": "integer", "minimum": 0 },
+            "ball_events": { "type": "integer", "minimum": 0 },
+            "batting_scores": { "type": "integer", "minimum": 0 },
+            "bowling_scores": { "type": "integer", "minimum": 0 },
+            "points_table": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

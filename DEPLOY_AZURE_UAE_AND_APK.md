@@ -18,8 +18,19 @@ This deploys in `uaenorth` by default.
 ```powershell
 pwsh .\scripts\azure-deploy-uae.ps1 `
   -ResourceGroup rg-crickethub-uae `
-  -WebAppName crickethub-uae-api `
+  -WebAppName cricket-hub `
   -CosmosAccountName crickethubuaecosmos
+```
+
+### Android-only backend (separate from website)
+Use a separate Web App + Cosmos account + app scope for Android:
+
+```powershell
+.\scripts\azure-deploy-uae.ps1 `
+  -ResourceGroup rg-cricket-android-uae `
+  -WebAppName cricket-android `
+  -CosmosAccountName cricketandroidcosmos `
+  -AppScope android
 ```
 
 After deployment, your website and API will be available at:
@@ -29,7 +40,13 @@ After deployment, your website and API will be available at:
 Use the same deployed URL so APK and website use the same Azure DB through backend API.
 
 ```powershell
-pwsh .\scripts\build-android-apk.ps1 -HostedUrl https://crickethub-uae-api.azurewebsites.net
+pwsh .\scripts\build-android-apk.ps1 -HostedUrl https://cricket-hub.azurewebsites.net
+```
+
+For Android-only backend:
+
+```powershell
+.\scripts\build-android-apk.ps1 -HostedUrl https://cricket-android.azurewebsites.net
 ```
 
 APK output path:

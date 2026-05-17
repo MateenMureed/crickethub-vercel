@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-const API = '/api'
+const API = (() => {
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+  if (!raw.startsWith('http')) return raw
+  return raw.endsWith('/api') ? raw : `${raw}/api`
+})()
 const WICKET_TYPES = ['bowled', 'caught', 'lbw', 'run out', 'stumped', 'hit wicket', 'retired out']
 
 export default function LiveScoring() {
@@ -51,7 +55,31 @@ export default function LiveScoring() {
       fetch(`${API}/innings/${active.id}/balls`).then(r => r.json()).catch(() => [])
     ])
     setBattingPlayers(bat); setBowlingPlayers(bowl); setBalls(be)
-    if (!active.striker_id || !active.non_striker_id) { setShowInningsInit(true); return }
+    if (!active.striker_id || !active.non_striker_id) {
+      const defaultStriker = bat?.[0] || null
+      const defaultNonStriker = bat?.[1] || null
+      const defaultBowler = (bowl || []).find((p) => ['bowler', 'all-rounder'].includes((p.role || '').toLowerCase())) || bowl?.[0] || null
+
+      if (defaultStriker && defaultNonStriker && defaultBowler) {
+        const autoInitRes = await fetch(`${API}/innings/${active.id}/initialize`, {
+          method: 'POST', headers: authJson,
+          body: JSON.stringify({ striker_id: defaultStriker.id, non_striker_id: defaultNonStriker.id, bowler_id: defaultBowler.id })
+        }).catch(() => null)
+        if (autoInitRes?.ok) {
+          setShowInningsInit(false)
+          await loadMatch()
+          return
+        }
+      }
+
+      setInningsInitCfg({
+        striker_id: defaultStriker?.id ? String(defaultStriker.id) : '',
+        non_striker_id: defaultNonStriker?.id ? String(defaultNonStriker.id) : '',
+        bowler_id: defaultBowler?.id ? String(defaultBowler.id) : '',
+      })
+      setShowInningsInit(true)
+      return
+    }
     if (!active.current_bowler_id) setShowBowlerModal(true)
   }
 
@@ -78,6 +106,7 @@ export default function LiveScoring() {
   const initInnings = async () => {
     const { striker_id, non_striker_id, bowler_id } = inningsInitCfg
     if (!striker_id || !non_striker_id || !bowler_id) { alert('Select all players'); return }
+    if (+striker_id === +non_striker_id) { alert('Striker and non-striker must be different players'); return }
     const res = await fetch(`${API}/innings/${currentInnings.id}/initialize`, {
       method: 'POST', headers: authJson,
       body: JSON.stringify({ striker_id: +striker_id, non_striker_id: +non_striker_id, bowler_id: +bowler_id })

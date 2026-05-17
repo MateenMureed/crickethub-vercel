@@ -1,0 +1,31 @@
+{
+  "id": "state-crickethub",
+  "pk": "crickethub",
+  "state": {
+    "users": [],
+    "leagues": [],
+    "sponsors": [],
+    "teams": [],
+    "players": [],
+    "matches": [],
+    "innings": [],
+    "ball_events": [],
+    "batting_scores": [],
+    "bowling_scores": [],
+    "points_table": [],
+    "_counters": {
+      "users": 0,
+      "leagues": 0,
+      "sponsors": 0,
+      "teams": 0,
+      "players": 0,
+      "matches": 0,
+      "innings": 0,
+      "ball_events": 0,
+      "batting_scores": 0,
+      "bowling_scores": 0,
+      "points_table": 0
+    }
+  },
+  "updatedAt": "2026-05-17T00:00:00.000Z"
+}

@@ -1,0 +1,114 @@
+<step title="Incoming Request" date="2026-03-14T11:27:59.896" instance="bf6391" url="/api/publish?type=static&amp;restart=True&amp;clean=False&amp;path=/home/site/wwwroot" method="POST" type="request" pid="832,1,22" Accept="*/*" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Cookie="ARRAffinity=bf6391891f813fe54cfda5d2cacef026f295eea9a062d1fd7d073d9ea2164a6b; ARRAffinitySameSite=bf6391891f813fe54cfda5d2cacef026f295eea9a062d1fd7d073d9ea2164a6b" Content-Length="176900" x-ms-client-request-id="d18f2dd6-1f98-11f1-8317-dcfb4820b033" X-ARR-LOG-ID="d18f2dd6-1f98-11f1-8317-dcfb4820b033" CLIENT-IP="39.34.138.14:58096" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=static&amp;restart=True&amp;clean=False&amp;path=/home/site/wwwroot" X-Client-IP="39.34.138.14" X-Client-Port="58096" >
+  <step title="OneDeploy" date="2026-03-14T11:27:59.987" >
+    <step title="Starting PushDeployAsync" date="2026-03-14T11:28:00.027" /><!-- duration: 19ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/wwwroot" date="2026-03-14T11:28:00.240" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/wwwroot" date="2026-03-14T11:28:00.278" /><!-- duration: 20ms -->
+    </step><!-- duration: 139ms -->
+    <step title="Attempting to fetch target branch HEAD" date="2026-03-14T11:28:00.429" /><!-- duration: 5ms -->
+    <step title="Acquiring Deployment Lock" date="2026-03-14T11:28:00.482" /><!-- duration: 29ms -->
+    <step title="Acquired Deployment Lock" date="2026-03-14T11:28:00.632" /><!-- duration: 21ms -->
+    <step title="Performing fetch based deployment" date="2026-03-14T11:28:00.723" >
+      <step title="Creating temporary deployment" date="2026-03-14T11:28:00.741" /><!-- duration: 273ms -->
+      <step title="Releasing Deployment Lock" date="2026-03-14T11:28:03.213" /><!-- duration: 31ms -->
+      <step title="Renaming (/tmp/zipdeploy/extracted) to (/tmp/zipdeploy/fc43onaz.rfc)" date="2026-03-14T11:28:03.305" /><!-- duration: 151ms -->
+      <step title="Moving /tmp/zipdeploy/fc43onaz.rfc/ to /tmp/zipdeploy/extracted/wwwroot" date="2026-03-14T11:28:03.475" /><!-- duration: 20ms -->
+      <step title="None repository commit" date="2026-03-14T11:28:03.528" >
+        <step title="Commit id: b24e1062-0c0d-442a-9fe1-493f4d150e31" date="2026-03-14T11:28:03.557" Message="OneDeploy" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 11ms -->
+      </step><!-- duration: 150ms -->
+      <step title="Deployment timer started" date="2026-03-14T11:28:05.762" >
+        <step title="DeploymentManager.Deploy(id:b24e1062-0c0d-442a-9fe1-493f4d150e31)" date="2026-03-14T11:28:05.891" >
+          <step title="Collecting changeset information" date="2026-03-14T11:28:06.013" /><!-- duration: 358ms -->
+          <step title="Updating submodules" date="2026-03-14T11:28:06.470" /><!-- duration: 1264ms -->
+          <step title="Determining deployment builder" date="2026-03-14T11:28:07.964" >
+            <step title="Builder is OneDeployBuilder" date="2026-03-14T11:28:07.976" /><!-- duration: 10ms -->
+          </step><!-- duration: 25ms -->
+          <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-14T11:28:08.043" >
+            <step title="PreDeployment: context.OutputPath /home/site" date="2026-03-14T11:28:08.181" >
+              <step title="Building" date="2026-03-14T11:28:08.351" >
+                <step title="Executing external process" date="2026-03-14T11:28:08.853" type="process" path="starter.sh" arguments="/opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site 8 /tmp/ False False  " >
+                  <step title="Process dump" date="2026-03-14T11:28:10.128" exitCode="123" type="processOutput" /><!-- duration: 4ms -->
+                </step><!-- duration: 1283ms -->
+                <step title="Error occurred" date="2026-03-14T11:28:10.171" type="error" text="could not make way for new regular file: wwwroot
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+could not make way for new regular file: wwwroot
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+/opt/Kudu/Scripts/starter.sh /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site 8 /tmp/ False False  " stackTrace="   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer, Func`2 onWriteOutput, Func`2 onWriteError, CancellationToken token, Encoding encoding, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger, ITracer tracer, CancellationToken token, String arguments, Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context, String command, Boolean ignoreManifest, CancellationToken token, String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135" /><!-- duration: 4ms -->
+                <step title="Error occurred" date="2026-03-14T11:28:10.568" type="error" text="Access to the path &apos;/home/site/wwwroot&apos; is denied." stackTrace="   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64&amp; fileLength, UnixFileMode&amp; filePermissions, Boolean failForSymlink, Boolean&amp; wasSymlink, Func`4 createOpenException)
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Kudu.Core.Infrastructure.FileSystemHelpers.CopyDirectoryRecursive(String sourceDirPath, String destinationDirPath, Boolean overwrite) in /tmp/KuduLite/Kudu.Core/Infrastructure/FileSystemHelpers.cs:line 239
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 108
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771" innerText="Permission denied" innerStackTrace="" /><!-- duration: 4ms -->
+                <step title="Purge deployment items" date="2026-03-14T11:28:11.120" >
+                  <step title="Remove 08ddeae2-, Failed, received at 03/14/2026 10:44:59" date="2026-03-14T11:28:11.177" /><!-- duration: 5ms -->
+                  <step title="Remove 00063f44-, Failed, received at 03/14/2026 10:35:39" date="2026-03-14T11:28:11.239" /><!-- duration: 4ms -->
+                </step><!-- duration: 128ms -->
+              </step><!-- duration: 2900ms -->
+            </step><!-- duration: 3075ms -->
+            <step title="Error occurred" date="2026-03-14T11:28:11.264" type="error" text="Access to the path &apos;/home/site/wwwroot&apos; is denied." stackTrace="   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64&amp; fileLength, UnixFileMode&amp; filePermissions, Boolean failForSymlink, Boolean&amp; wasSymlink, Func`4 createOpenException)
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Kudu.Core.Infrastructure.FileSystemHelpers.CopyDirectoryRecursive(String sourceDirPath, String destinationDirPath, Boolean overwrite) in /tmp/KuduLite/Kudu.Core/Infrastructure/FileSystemHelpers.cs:line 239
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 108
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840" innerText="Permission denied" innerStackTrace="" /><!-- duration: 12ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T11:28:11.385" /><!-- duration: 5ms -->
+            <step title="Cleaning up temp files" date="2026-03-14T11:28:11.396" /><!-- duration: 519ms -->
+            <step title="Error occurred" date="2026-03-14T11:28:11.961" type="error" text="Access to the path &apos;/home/site/wwwroot&apos; is denied." stackTrace="   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64&amp; fileLength, UnixFileMode&amp; filePermissions, Boolean failForSymlink, Boolean&amp; wasSymlink, Func`4 createOpenException)
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Kudu.Core.Infrastructure.FileSystemHelpers.CopyDirectoryRecursive(String sourceDirPath, String destinationDirPath, Boolean overwrite) in /tmp/KuduLite/Kudu.Core/Infrastructure/FileSystemHelpers.cs:line 239
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 108
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" innerText="Permission denied" innerStackTrace="" /><!-- duration: 10ms -->
+          </step><!-- duration: 3961ms -->
+          <step title="Reloading status file with latest updates" date="2026-03-14T11:28:12.102" >
+            <step title="WebHooksManager.PublishEventAsync: PostDeployment" date="2026-03-14T11:28:12.114" /><!-- duration: 32ms -->
+          </step><!-- duration: 49ms -->
+          <step title="Error occurred" date="2026-03-14T11:28:12.156" type="error" text="Access to the path &apos;/home/site/wwwroot&apos; is denied." stackTrace="   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64&amp; fileLength, UnixFileMode&amp; filePermissions, Boolean failForSymlink, Boolean&amp; wasSymlink, Func`4 createOpenException)
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Kudu.Core.Infrastructure.FileSystemHelpers.CopyDirectoryRecursive(String sourceDirPath, String destinationDirPath, Boolean overwrite) in /tmp/KuduLite/Kudu.Core/Infrastructure/FileSystemHelpers.cs:line 239
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 108
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" innerText="Permission denied" innerStackTrace="" /><!-- duration: 5ms -->
+          <step title="Marking deployment as failed and cleaning up the temp deployment" date="2026-03-14T11:28:12.229" /><!-- duration: 14ms -->
+        </step><!-- duration: 6497ms -->
+      </step><!-- duration: 6633ms -->
+      <step title="Error occurred" date="2026-03-14T11:28:12.409" type="error" text="Deployment failed" stackTrace="   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 307
+   at Kudu.Core.Deployment.FetchDeploymentManager.PerformDeployment(DeploymentInfoBase deploymentInfo, IDisposable tempDeployment, ChangeSet tempChangeSet, DeployStatusApiResult updateStatusObj) in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 230
+   at Kudu.Core.Deployment.FetchDeploymentManager.&lt;&gt;c__DisplayClass17_0.&lt;&lt;FetchDeploy&gt;b__0&gt;d.MoveNext() in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 131
+--- End of stack trace from previous location ---
+   at Kudu.Core.Deployment.FetchDeploymentManager.FetchDeploy(DeploymentInfoBase deployInfo, Boolean asyncRequested, Uri requestUri, String targetBranch) in /tmp/KuduLite/Kudu.Core/Deployment/FetchDeploymentManager.cs:line 124
+   at Kudu.Services.Deployment.PushDeploymentController.PushDeployAsync(ArtifactDeploymentInfo deploymentInfo, Boolean isAsync, HttpContext context, JObject requestJson) in /tmp/KuduLite/Kudu.Services/Deployment/PushDeploymentController.cs:line 802
+   at Kudu.Services.Deployment.PushDeploymentController.OneDeploy(String type, Boolean async, String path, Nullable`1 restart, Nullable`1 clean, Boolean ignoreStack, Boolean trackDeploymentProgress, Boolean trackStatus, Boolean reset) in /tmp/KuduLite/Kudu.Services/Deployment/PushDeploymentController.cs:line 624
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeInnerFilterAsync&gt;g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeNextResourceFilter&gt;g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Kudu.Services.Web.Startup.&lt;&gt;c.&lt;&lt;Configure&gt;b__11_7&gt;d.MoveNext() in /tmp/KuduLite/Kudu.Services.Web/Startup.cs:line 428
+--- End of stack trace from previous location ---
+   at Kudu.Services.Web.Tracing.TraceMiddleware.Invoke(HttpContext context) in /tmp/KuduLite/Kudu.Services.Web/Tracing/TraceMiddleware.cs:line 101" innerText="Access to the path &apos;/home/site/wwwroot&apos; is denied." innerStackTrace="   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64&amp; fileLength, UnixFileMode&amp; filePermissions, Boolean failForSymlink, Boolean&amp; wasSymlink, Func`4 createOpenException)
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Kudu.Core.Infrastructure.FileSystemHelpers.CopyDirectoryRecursive(String sourceDirPath, String destinationDirPath, Boolean overwrite) in /tmp/KuduLite/Kudu.Core/Infrastructure/FileSystemHelpers.cs:line 239
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context, CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 108
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 771
+   at Kudu.Core.Deployment.DeploymentManager.Build(ChangeSet changeSet, ITracer tracer, IDisposable deployStep, IRepository repository, DeploymentInfoBase deploymentInfo, DeploymentAnalytics deploymentAnalytics, Boolean fullBuildByDefault, CancellationToken cancellationToken) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 840
+   at Kudu.Core.Deployment.DeploymentManager.DeployAsync(IRepository repository, ChangeSet changeSet, String deployer, Boolean clean, DeploymentInfoBase deploymentInfo, Boolean needFileUpdate, Boolean fullBuildByDefault) in /tmp/KuduLite/Kudu.Core/Deployment/DeploymentManager.cs:line 266" /><!-- duration: 8ms -->
+      <step title="Incoming Request" date="2026-03-14T11:28:12.447" url="/Error?type=static&amp;restart=True&amp;clean=False&amp;path=/home/site/wwwroot" method="POST" type="request" pid="832,1,22" Accept="*/*" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Cookie="ARRAffinity=bf6391891f813fe54cfda5d2cacef026f295eea9a062d1fd7d073d9ea2164a6b; ARRAffinitySameSite=bf6391891f813fe54cfda5d2cacef026f295eea9a062d1fd7d073d9ea2164a6b" Content-Length="176900" x-ms-client-request-id="d18f2dd6-1f98-11f1-8317-dcfb4820b033" X-ARR-LOG-ID="d18f2dd6-1f98-11f1-8317-dcfb4820b033" CLIENT-IP="39.34.138.14:58096" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=static&amp;restart=True&amp;clean=False&amp;path=/home/site/wwwroot" X-Client-IP="39.34.138.14" X-Client-Port="58096" >
+        <step title="Outgoing response" date="2026-03-14T11:28:12.506" type="response" statusCode="400" statusText="BadRequest" /><!-- duration: 9ms -->
+      </step><!-- duration: 76ms -->

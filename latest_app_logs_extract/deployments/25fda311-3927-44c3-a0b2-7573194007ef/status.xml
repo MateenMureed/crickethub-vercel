@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<deployment>
+  <id>25fda311-3927-44c3-a0b2-7573194007ef</id>
+  <author>N/A</author>
+  <deployer>OneDeploy</deployer>
+  <authorEmail>N/A</authorEmail>
+  <message>OneDeploy</message>
+  <progress>Running deployment command...</progress>
+  <status>Building</status>
+  <statusText>Building and Deploying '25fda311-3927-44c3-a0b2-7573194007ef'.</statusText>
+  <lastSuccessEndTime />
+  <receivedTime>2026-03-14T14:15:43.478793Z</receivedTime>
+  <startTime>2026-03-14T14:15:46.0157522Z</startTime>
+  <endTime />
+  <complete>False</complete>
+  <is_temp>False</is_temp>
+  <is_readonly>True</is_readonly>
+  <buildSummary />
+</deployment>

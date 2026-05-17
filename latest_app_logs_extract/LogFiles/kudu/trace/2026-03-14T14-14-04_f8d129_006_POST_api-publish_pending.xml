@@ -1,0 +1,31 @@
+<step title="Incoming Request" date="2026-03-14T14:14:04.596" instance="f8d129" url="/api/publish?type=zip&amp;clean=True" method="POST" type="request" pid="835,1,23" Accept="*/*" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." Cache-Control="no-cache" Content-Type="application/octet-stream" Content-Length="65761406" x-ms-client-request-id="8ba4552a-1fac-11f1-96d7-dcfb4820b033" x-ms-artifact-checksum="2d8860c68f016a621043a9e77ead814cf734f26be1cb1bcebc3a1cce8ca91a1e" X-ARR-LOG-ID="8ba4552a-1fac-11f1-96d7-dcfb4820b033" CLIENT-IP="39.34.138.14:58108" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?type=zip&amp;clean=True" X-Client-IP="39.34.138.14" X-Client-Port="58108" >
+  <step title="Cleanup Xml Logs" date="2026-03-14T14:14:04.696" /><!-- duration: 113ms -->
+  <step title="OneDeploy" date="2026-03-14T14:14:06.475" >
+    <step title="Starting PushDeployAsync" date="2026-03-14T14:14:06.559" /><!-- duration: 330ms -->
+    <step title="Removing node_modules symlink" date="2026-03-14T14:14:07.171" >
+      <step title="Writing artifact to /tmp/zipdeploy/6c56e99c-d949-427b-896d-656dcffd2f5d.zip" date="2026-03-14T14:14:08.797" >
+        <step title="Writing multipart request body to /tmp/zipdeploy/6c56e99c-d949-427b-896d-656dcffd2f5d.zip" date="2026-03-14T14:14:08.838" /><!-- duration: 63ms -->
+      </step><!-- duration: 21228ms -->
+      <step title="Attempting to fetch target branch HEAD" date="2026-03-14T14:14:30.167" /><!-- duration: 51ms -->
+      <step title="Acquiring Deployment Lock" date="2026-03-14T14:14:30.269" /><!-- duration: 78ms -->
+      <step title="Acquired Deployment Lock" date="2026-03-14T14:14:30.570" /><!-- duration: 29ms -->
+      <step title="Performing fetch based deployment" date="2026-03-14T14:14:30.660" >
+        <step title="Creating temporary deployment" date="2026-03-14T14:14:30.811" /><!-- duration: 915ms -->
+        <step title="Releasing Deployment Lock" date="2026-03-14T14:14:33.810" /><!-- duration: 60ms -->
+        <step title="Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/6c56e99c-d949-427b-896d-656dcffd2f5d.zip (62.71 MB) to /tmp/zipdeploy/extracted" date="2026-03-14T14:14:34.161" >
+          <step title="ChmodRecursive Process exited with total time taken in ms: 53" date="2026-03-14T14:15:40.673" /><!-- duration: 50ms -->
+        </step><!-- duration: 66593ms -->
+        <step title="None repository commit" date="2026-03-14T14:15:40.875" >
+          <step title="Commit id: 25fda311-3927-44c3-a0b2-7573194007ef" date="2026-03-14T14:15:40.915" Message="OneDeploy" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 41ms -->
+        </step><!-- duration: 170ms -->
+        <step title="Deployment timer started" date="2026-03-14T14:15:43.128" >
+          <step title="DeploymentManager.Deploy(id:25fda311-3927-44c3-a0b2-7573194007ef)" date="2026-03-14T14:15:43.158" >
+            <step title="Collecting changeset information" date="2026-03-14T14:15:43.317" /><!-- duration: 372ms -->
+            <step title="Updating submodules" date="2026-03-14T14:15:43.752" /><!-- duration: 1560ms -->
+            <step title="Determining deployment builder" date="2026-03-14T14:15:46.386" >
+              <step title="Builder is OneDeployBuilder" date="2026-03-14T14:15:46.436" /><!-- duration: 41ms -->
+            </step><!-- duration: 122ms -->
+            <step title="PreDeployment: context.CleanOutputPath False" date="2026-03-14T14:15:46.767" >
+              <step title="PreDeployment: context.OutputPath /home/site/wwwroot" date="2026-03-14T14:15:47.282" >
+                <step title="Building" date="2026-03-14T14:15:47.753" >
+                  <step title="Executing external process" date="2026-03-14T14:15:50.612" type="process" path="starter.sh" arguments="/opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ True False  " 

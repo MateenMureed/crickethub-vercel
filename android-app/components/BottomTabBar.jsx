@@ -39,9 +39,24 @@ export default function BottomTabBar() {
           50% { transform: scale(1.05); }
         }
 
+        @keyframes water-drop {
+          0% {
+            transform: translate(-50%, -50%) scale(0.08);
+            opacity: 0.45;
+          }
+          70% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.14;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1.35);
+            opacity: 0;
+          }
+        }
+
         .bottom-nav-container {
           position: fixed;
-           bottom: 6px;
+           bottom: max(12px, env(safe-area-inset-bottom, 0px));
           left: 0;
           right: 0;
           z-index: 1000;
@@ -54,7 +69,9 @@ export default function BottomTabBar() {
         .bottom-nav-backdrop {
           position: absolute;
           inset: 0;
-          background: var(--nav-bg);
+          background:
+            radial-gradient(130% 110% at 50% -30%, rgba(255, 255, 255, 0.24), transparent 54%),
+            linear-gradient(120deg, color-mix(in srgb, var(--nav-bg) 86%, rgba(255,255,255,.12)) 0%, color-mix(in srgb, var(--nav-bg) 92%, transparent) 100%);
           backdrop-filter: blur(28px) saturate(200%);
           -webkit-backdrop-filter: blur(28px) saturate(200%);
           border: 1px solid var(--glass-bd);
@@ -63,16 +80,25 @@ export default function BottomTabBar() {
           box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
         }
 
+        .bottom-nav-backdrop::after {
+          content: '';
+          position: absolute;
+          inset: 1px;
+          border-radius: inherit;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          pointer-events: none;
+        }
+
         .bottom-nav-content {
           position: relative;
           z-index: 1;
           display: flex;
           justify-content: space-around;
           align-items: center;
-           height: 48px;
-           width: min(360px, calc(100vw - 22px));
-           padding: 3px;
-           gap: 3px;
+           height: 56px;
+           width: min(396px, calc(100vw - 20px));
+           padding: 4px;
+           gap: 4px;
           pointer-events: auto;
         }
 
@@ -94,8 +120,11 @@ export default function BottomTabBar() {
           color: var(--t3);
           font-family: var(--font-display);
           font-weight: 600;
-           font-size: 0.58rem;
+           font-size: 0.62rem;
           letter-spacing: 0.3px;
+          isolation: isolate;
+          overflow: hidden;
+          will-change: transform;
         }
 
         .nav-tab-button:hover {
@@ -111,11 +140,25 @@ export default function BottomTabBar() {
         }
 
         .nav-tab-button.active::before {
-          content: none;
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          height: 180%;
+          border-radius: 999px;
+          background: radial-gradient(circle, rgba(255,255,255,.38) 0%, rgba(255,255,255,.12) 36%, transparent 72%);
+          transform: translate(-50%, -50%) scale(0.08);
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .nav-tab-button.active::before {
+          animation: water-drop 680ms cubic-bezier(0.21, 0.89, 0.22, 1);
         }
 
         .nav-tab-icon {
-            font-size: 0.86rem;
+          font-size: 0.98rem;
            line-height: 1;
            display: inline-flex;
            align-items: center;
@@ -132,7 +175,7 @@ export default function BottomTabBar() {
         .nav-tab-label {
           text-transform: uppercase;
           letter-spacing: 0.25px;
-           font-size: 0.45rem;
+           font-size: 0.5rem;
           transition: all 0.3s ease;
         }
 
@@ -154,33 +197,37 @@ export default function BottomTabBar() {
         }
 
         .nav-tab-button.active .nav-indicator {
+          box-shadow: 0 0 12px rgba(0, 232, 150, 0.45);
+        }
+
+        .nav-tab-button.active .nav-indicator {
           transform: scaleX(1);
         }
 
         @media (max-width: 480px) {
           .bottom-nav-content {
-             height: 42px;
-             width: calc(100vw - 14px);
+             height: 52px;
+             width: calc(100vw - 12px);
              gap: 2px;
           }
 
           .nav-tab-button {
-             font-size: 0.52rem;
+             font-size: 0.57rem;
              gap: 1px;
           }
 
           .nav-tab-icon {
-             font-size: 0.8rem;
+             font-size: 0.92rem;
           }
 
            .nav-tab-label {
-             font-size: 0.42rem;
+             font-size: 0.46rem;
            }
         }
 
           @media (max-width: 360px) {
            .bottom-nav-content {
-             height: 42px;
+             height: 50px;
              width: calc(100vw - 10px);
            }
 

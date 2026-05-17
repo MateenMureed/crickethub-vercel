@@ -1,0 +1,4 @@
+<step title="Incoming Request" date="2026-03-14T14:17:16.154" instance="f8d129" url="/api/settings/branch" method="GET" type="request" pid="835,1,20" Host="crickethub.scm.azurewebsites.net" User-Agent="Azure-WebSites-Controller/107.0.7.33" Authorization="Bas..." x-ms-request-id="3f0852b3-58d4-4d75-b9ae-98cb797e4313" X-ARR-LOG-ID="3f0852b3-58d4-4d75-b9ae-98cb797e4313" CLIENT-IP="20.74.195.2:4545" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-MS-PLATFORM-INTERNAL="True" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/settings/branch" X-Client-IP="20.74.195.2" X-Client-Port="4545" >
+  <step title="Cleanup Xml Logs" date="2026-03-14T14:17:16.165" /><!-- duration: 130ms -->
+  <step title="Outgoing response" date="2026-03-14T14:17:16.398" type="response" statusCode="200" statusText="OK" /><!-- duration: 30ms -->
+</step><!-- duration: 323ms -->

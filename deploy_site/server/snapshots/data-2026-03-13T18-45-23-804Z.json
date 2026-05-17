@@ -1,0 +1,267 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "mateenmureed",
+      "password": "123456"
+    }
+  ],
+  "leagues": [
+    {
+      "id": 6,
+      "name": "PSL Season 4",
+      "city": "Khairpur",
+      "venue": "Piryaloi",
+      "organizer": "Mateen Mureed",
+      "logo": "/uploads/1773414704637-f4gx7llgh.jpg",
+      "season": "2026",
+      "format": "knockout",
+      "overs_per_innings": 1,
+      "status": "upcoming",
+      "created_at": "2026-03-13T15:11:44.727Z"
+    }
+  ],
+  "sponsors": [],
+  "teams": [
+    {
+      "id": 1,
+      "league_id": 6,
+      "name": "KDS",
+      "logo": null,
+      "captain_name": "Yureedullah",
+      "captain_photo": "/uploads/1773426996051-d4h5pxeug.png",
+      "captain_id": 1
+    },
+    {
+      "id": 2,
+      "league_id": 6,
+      "name": "SKC",
+      "logo": null,
+      "captain_name": "abc",
+      "captain_photo": null,
+      "captain_id": 12
+    }
+  ],
+  "players": [
+    {
+      "id": 1,
+      "team_id": 1,
+      "name": "Yureedullah",
+      "role": "all-rounder",
+      "jersey_number": 22,
+      "photo": "/uploads/1773426996051-d4h5pxeug.png"
+    },
+    {
+      "id": 2,
+      "team_id": 1,
+      "name": "Musawir Baloch",
+      "role": "batsman",
+      "jersey_number": 34,
+      "photo": null
+    },
+    {
+      "id": 3,
+      "team_id": 1,
+      "name": "Mateen Mureed",
+      "role": "batsman",
+      "jersey_number": 10,
+      "photo": "/uploads/1773426996091-ebetu2uq8.jpg"
+    },
+    {
+      "id": 4,
+      "team_id": 1,
+      "name": "Ifitikhar Baloch",
+      "role": "bowler",
+      "jersey_number": 21,
+      "photo": "/uploads/1773426996100-6lj1mc3y0.jpg"
+    },
+    {
+      "id": 5,
+      "team_id": 1,
+      "name": "Shafi Baloch",
+      "role": "batsman",
+      "jersey_number": 16,
+      "photo": null
+    },
+    {
+      "id": 6,
+      "team_id": 1,
+      "name": "Nadir Baloch",
+      "role": "all-rounder",
+      "jersey_number": 44,
+      "photo": null
+    },
+    {
+      "id": 7,
+      "team_id": 1,
+      "name": "Noor",
+      "role": "batsman",
+      "jersey_number": 35,
+      "photo": null
+    },
+    {
+      "id": 8,
+      "team_id": 1,
+      "name": "Saboor Baloch",
+      "role": "bowler",
+      "jersey_number": 54,
+      "photo": null
+    },
+    {
+      "id": 9,
+      "team_id": 1,
+      "name": "Bari",
+      "role": "batsman",
+      "jersey_number": 24,
+      "photo": null
+    },
+    {
+      "id": 10,
+      "team_id": 1,
+      "name": "Feroz",
+      "role": "batsman",
+      "jersey_number": 10,
+      "photo": null
+    },
+    {
+      "id": 11,
+      "team_id": 1,
+      "name": "Futoor",
+      "role": "batsman",
+      "jersey_number": 31,
+      "photo": null
+    },
+    {
+      "id": 12,
+      "team_id": 2,
+      "name": "abc",
+      "role": "batsman",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 13,
+      "team_id": 2,
+      "name": "abcd",
+      "role": "batsman",
+      "jersey_number": -1,
+      "photo": null
+    },
+    {
+      "id": 14,
+      "team_id": 2,
+      "name": "asd",
+      "role": "batsman",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 15,
+      "team_id": 2,
+      "name": "asd",
+      "role": "batsman",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 16,
+      "team_id": 2,
+      "name": "ad",
+      "role": "wicket-keeper",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 17,
+      "team_id": 2,
+      "name": "asd",
+      "role": "all-rounder",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 18,
+      "team_id": 2,
+      "name": "asd",
+      "role": "batsman",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 19,
+      "team_id": 2,
+      "name": "ad",
+      "role": "batsman",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 20,
+      "team_id": 2,
+      "name": "asd",
+      "role": "bowler",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 21,
+      "team_id": 2,
+      "name": "asd",
+      "role": "bowler",
+      "jersey_number": 0,
+      "photo": null
+    },
+    {
+      "id": 22,
+      "team_id": 2,
+      "name": "asf",
+      "role": "bowler",
+      "jersey_number": 0,
+      "photo": null
+    }
+  ],
+  "matches": [],
+  "innings": [],
+  "ball_events": [],
+  "batting_scores": [],
+  "bowling_scores": [],
+  "points_table": [
+    {
+      "id": 1,
+      "league_id": 6,
+      "team_id": 1,
+      "matches_played": 0,
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "no_results": 0,
+      "points": 0,
+      "nrr": 0
+    },
+    {
+      "id": 2,
+      "league_id": 6,
+      "team_id": 2,
+      "matches_played": 0,
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "no_results": 0,
+      "points": 0,
+      "nrr": 0
+    }
+  ],
+  "_counters": {
+    "users": 1,
+    "leagues": 6,
+    "sponsors": 0,
+    "teams": 2,
+    "players": 22,
+    "matches": 0,
+    "innings": 0,
+    "ball_events": 0,
+    "batting_scores": 0,
+    "bowling_scores": 0,
+    "points_table": 2
+  }
+}

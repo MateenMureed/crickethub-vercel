@@ -1,19 +1,28 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   generateResultBannerForMatch,
   generateSummaryBannerForMatch,
 } from '../components/GraphicsGeneratorPanel'
 
-const API = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '')
-const API_FALLBACK = `http://${window.location.hostname}:3001/api`
+const API = (() => {
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+  if (!raw.startsWith('http')) return raw
+  return raw.endsWith('/api') ? raw : `${raw}/api`
+})()
+const API_FALLBACK = (() => {
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_FALLBACK_URL || '').replace(/\/$/, '')
+  if (!raw) return ''
+  if (!raw.startsWith('http')) return raw
+  return raw.endsWith('/api') ? raw : `${raw}/api`
+})()
 const WICKET_TYPES = ['bowled', 'caught', 'lbw', 'run out', 'stumped', 'hit wicket', 'retired out']
 
 function buildApiUrls(path) {
   const cleanPath = String(path || '').startsWith('/') ? path : `/${path}`
   const primary = `${API}${cleanPath}`
   const urls = [primary]
-  if (API.startsWith('/')) {
+  if (API_FALLBACK && API_FALLBACK !== API) {
     urls.push(`${API_FALLBACK}${cleanPath}`)
   }
   return [...new Set(urls)]
@@ -42,7 +51,14 @@ async function apiCall(path, options) {
 
   for (let i = 0; i < urls.length; i++) {
     try {
-      return await fetch(urls[i], options)
+      const res = await fetch(urls[i], options)
+      if (res.ok) return res
+
+      if (res.status >= 500 && i < urls.length - 1) {
+        continue
+      }
+
+      return res
     } catch (err) {
       lastErr = err
     }
@@ -506,8 +522,8 @@ const css = `
     .ls-metric-v { font-size: 0.85rem; }
     .ls-ball { width: 26px; height: 26px; font-size: .68rem; }
     .ls-form-row { grid-template-columns: 1fr; }
-    .ls-overlay { padding: 0; align-items: flex-end; }
-    .ls-modal { border-bottom-left-radius: 0; border-bottom-right-radius: 0; max-width: 100%; }
+    .ls-overlay { padding: 10px; align-items: center; justify-content: center; }
+    .ls-modal { border-bottom-left-radius: var(--r-xl); border-bottom-right-radius: var(--r-xl); max-width: 420px; }
     .ls-action-dock { width: calc(100vw - 12px); bottom: 8px; padding: 7px; gap: 7px; border-radius: 14px; }
   }
 `
@@ -515,6 +531,9 @@ const css = `
 export default function LiveScoring() {
   const { matchId } = useParams()
   const navigate = useNavigate()
+  const touchStartYRef = useRef(null)
+  const pullTriggeredRef = useRef(false)
+  const bowlerPromptRef = useRef({ overKey: '', suppressedUntil: 0 })
 
   const [match, setMatch] = useState(null)
   const [currentInnings, setCurrentInnings] = useState(null)
@@ -536,6 +555,7 @@ export default function LiveScoring() {
   const [showInningsInitModal, setShowInningsInitModal] = useState(false)
   const [inningsInitConfig, setInningsInitConfig] = useState({ striker_id: '', non_striker_id: '', bowler_id: '' })
   const [dataError, setDataError] = useState('')
+  const [isPullRefreshing, setIsPullRefreshing] = useState(false)
 
   const fetchTeamPlayers = async (teamId) => {
     if (!teamId || Number.isNaN(teamId)) return []
@@ -578,7 +598,17 @@ export default function LiveScoring() {
       setShowBowlerModal(false)
       return
     }
-    if (!active.current_bowler_id) setShowBowlerModal(true)
+    if (!active.current_bowler_id) {
+      const overKey = `${active.id}_${Math.floor((active.total_balls || 0) / 6)}`
+      const now = Date.now()
+      const isSuppressed = now < Number(bowlerPromptRef.current.suppressedUntil || 0)
+      const alreadyPromptedThisOver = bowlerPromptRef.current.overKey === overKey
+      if (!showBowlerModal && !isSuppressed && !alreadyPromptedThisOver) {
+        bowlerPromptRef.current.overKey = overKey
+        setSelectedBowler('')
+        setShowBowlerModal(true)
+      }
+    }
   }
 
   useEffect(() => { loadMatch() }, [matchId])
@@ -586,6 +616,36 @@ export default function LiveScoring() {
     const id = setInterval(loadMatch, 1000)
     return () => clearInterval(id)
   }, [matchId])
+
+  const onTouchStartPull = (e) => {
+    if (window.scrollY > 0 || document.documentElement.scrollTop > 0 || document.body.scrollTop > 0) {
+      touchStartYRef.current = null
+      return
+    }
+    touchStartYRef.current = e.touches?.[0]?.clientY ?? null
+    pullTriggeredRef.current = false
+  }
+
+  const onTouchMovePull = async (e) => {
+    if (isPullRefreshing || pullTriggeredRef.current || touchStartYRef.current == null) return
+    const currentY = e.touches?.[0]?.clientY
+    if (typeof currentY !== 'number') return
+    const delta = currentY - touchStartYRef.current
+    if (delta < 80) return
+
+    pullTriggeredRef.current = true
+    setIsPullRefreshing(true)
+    try {
+      await loadMatch()
+    } finally {
+      setIsPullRefreshing(false)
+    }
+  }
+
+  const onTouchEndPull = () => {
+    touchStartYRef.current = null
+    pullTriggeredRef.current = false
+  }
 
   const loadTeamPlayersForSelection = async (teamId) => {
     if (!teamId || Number.isNaN(teamId)) return []
@@ -595,20 +655,73 @@ export default function LiveScoring() {
     return players
   }
 
+  const startBattingTeamId = parseInt(startConfig.batting_team_id || '0', 10)
+  const startBowlingTeamId = parseInt(startConfig.bowling_team_id || '0', 10)
+  const startBattingPlayers = teamSquadsById[startBattingTeamId] || []
+  const startBowlingPlayers = teamSquadsById[startBowlingTeamId] || []
+  const startBowlerOptions = startBowlingPlayers.filter((p) => ['bowler', 'all-rounder', 'all rounder', 'wicket-keeper'].includes((p.role || '').toLowerCase()))
+
+  useEffect(() => {
+    if (startBattingTeamId > 0) loadTeamPlayersForSelection(startBattingTeamId)
+    if (startBowlingTeamId > 0) loadTeamPlayersForSelection(startBowlingTeamId)
+  }, [startBattingTeamId, startBowlingTeamId])
+
+  useEffect(() => {
+    if (!startBattingTeamId) return
+    setStartConfig((prev) => {
+      if (!prev.bowling_team_id || Number(prev.bowling_team_id) === startBattingTeamId) {
+        const opposite = startBattingTeamId === Number(match?.team_a_id) ? Number(match?.team_b_id) : Number(match?.team_a_id)
+        return { ...prev, bowling_team_id: String(opposite || '') }
+      }
+      return prev
+    })
+  }, [startBattingTeamId, match?.team_a_id, match?.team_b_id])
+
+  useEffect(() => {
+    if (!startBattingPlayers.length) return
+    setStartConfig((prev) => {
+      const strikerValid = startBattingPlayers.some((p) => String(p.id) === String(prev.striker_id))
+      const nonStrikerValid = startBattingPlayers.some((p) => String(p.id) === String(prev.non_striker_id))
+
+      const next = { ...prev }
+      if (!strikerValid) next.striker_id = String(startBattingPlayers[0]?.id || '')
+
+      const defaultNon = startBattingPlayers.find((p) => String(p.id) !== String(next.striker_id))
+      if (!nonStrikerValid || String(next.non_striker_id) === String(next.striker_id)) {
+        next.non_striker_id = String(defaultNon?.id || '')
+      }
+      return next
+    })
+  }, [startBattingPlayers])
+
+  useEffect(() => {
+    if (!startBowlingPlayers.length) return
+    setStartConfig((prev) => {
+      const bowlerValid = startBowlingPlayers.some((p) => String(p.id) === String(prev.bowler_id))
+      if (bowlerValid) return prev
+      const opening = startBowlingPlayers.find((p) => ['bowler', 'all-rounder', 'all rounder'].includes((p.role || '').toLowerCase())) || startBowlingPlayers[0]
+      return { ...prev, bowler_id: String(opening?.id || '') }
+    })
+  }, [startBowlingPlayers])
+
   const startInnings = async (e) => {
     e.preventDefault()
-    const { batting_team_id, bowling_team_id } = startConfig
-    if (!batting_team_id || !bowling_team_id) {
-      alert('Select both teams')
+    const { batting_team_id, bowling_team_id, striker_id, non_striker_id, bowler_id } = startConfig
+    if (!batting_team_id || !bowling_team_id || !striker_id || !non_striker_id || !bowler_id) {
+      alert('Select teams, striker, non-striker, and opening bowler')
+      return
+    }
+    if (String(striker_id) === String(non_striker_id)) {
+      alert('Striker and non-striker must be different players')
       return
     }
     const battingPlayersForStart = await loadTeamPlayersForSelection(parseInt(batting_team_id, 10))
     const bowlingPlayersForStart = await loadTeamPlayersForSelection(parseInt(bowling_team_id, 10))
-    const striker = battingPlayersForStart[0]
-    const nonStriker = battingPlayersForStart[1]
-    const openingBowler = bowlingPlayersForStart.find(p => ['bowler', 'all-rounder', 'all rounder'].includes((p.role || '').toLowerCase())) || bowlingPlayersForStart[0]
+    const striker = battingPlayersForStart.find((p) => String(p.id) === String(striker_id))
+    const nonStriker = battingPlayersForStart.find((p) => String(p.id) === String(non_striker_id))
+    const openingBowler = bowlingPlayersForStart.find((p) => String(p.id) === String(bowler_id))
     if (!striker || !nonStriker || !openingBowler) {
-      alert('Not enough players to start innings')
+      alert('Selected players are not available in team squads')
       return
     }
     const res = await apiCall(`/matches/${matchId}/start`, {
@@ -669,6 +782,7 @@ export default function LiveScoring() {
       alert(d.error || 'Failed to set bowler')
       return
     }
+    bowlerPromptRef.current.suppressedUntil = Date.now() + 5000
     setShowBowlerModal(false)
     setSelectedBowler('')
     await loadMatch()
@@ -793,14 +907,25 @@ export default function LiveScoring() {
   const rrr = runsNeeded && ballsLeft > 0 ? ((runsNeeded / ballsLeft) * 6).toFixed(2) : null
 
   const availableBatsmen = useMemo(() => {
-    const inningsBatIds = activeInnings?.batting?.map(b => b.player_id) || []
-    return battingPlayers.filter(p => !inningsBatIds.includes(p.id) || !activeInnings?.batting?.find(b => b.player_id === p.id && b.is_out === false))
-  }, [battingPlayers, activeInnings])
+    const outIds = new Set(
+      (activeInnings?.batting || [])
+        .filter((b) => b.is_out || b.dismissal_type || b.out_over != null)
+        .map((b) => b.player_id)
+    )
+    balls.forEach((b) => {
+      if (b?.is_wicket && b?.dismissed_player_id) outIds.add(b.dismissed_player_id)
+    })
+    const strikerId = currentInnings?.striker_id
+    const nonStrikerId = currentInnings?.non_striker_id
+    return battingPlayers.filter((p) => p.id !== strikerId && p.id !== nonStrikerId && !outIds.has(p.id))
+  }, [battingPlayers, activeInnings, currentInnings, balls])
 
   const availableBowlers = useMemo(() => {
-    const lastOverBowlerId = balls.length > 0 ? balls[balls.length - 1]?.bowler_id : null
-    return bowlingPlayers.filter(p => (p.role === 'bowler' || p.role === 'all-rounder') && p.id !== lastOverBowlerId)
-  }, [bowlingPlayers, balls])
+    const lastOverBowlerId = currentInnings?.last_over_bowler_id || null
+    const specialist = bowlingPlayers.filter((p) => ['bowler', 'all-rounder', 'all rounder'].includes((p.role || '').toLowerCase()))
+    const pool = specialist.length > 0 ? specialist : bowlingPlayers
+    return pool.filter((p) => p.id !== lastOverBowlerId)
+  }, [bowlingPlayers, currentInnings])
 
   if (!match) {
     return (
@@ -855,6 +980,36 @@ export default function LiveScoring() {
                       </select>
                     </div>
                   </div>
+
+                  <div className="ls-form-row">
+                    <div className="form-group">
+                      <label className="form-label">Striker</label>
+                      <select className="form-select" value={startConfig.striker_id} onChange={e => setStartConfig(p => ({ ...p, striker_id: e.target.value }))}>
+                        <option value="">Select striker</option>
+                        {startBattingPlayers
+                          .filter((p) => String(p.id) !== String(startConfig.non_striker_id || ''))
+                          .map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Non-Striker</label>
+                      <select className="form-select" value={startConfig.non_striker_id} onChange={e => setStartConfig(p => ({ ...p, non_striker_id: e.target.value }))}>
+                        <option value="">Select non-striker</option>
+                        {startBattingPlayers
+                          .filter((p) => String(p.id) !== String(startConfig.striker_id || ''))
+                          .map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">Opening Bowler</label>
+                    <select className="form-select" value={startConfig.bowler_id} onChange={e => setStartConfig(p => ({ ...p, bowler_id: e.target.value }))}>
+                      <option value="">Select opening bowler</option>
+                      {(startBowlerOptions.length ? startBowlerOptions : startBowlingPlayers)
+                        .map((p) => <option key={p.id} value={p.id}>{p.name} ({p.role || 'player'})</option>)}
+                    </select>
+                  </div>
                 </div>
                 <div style={{ padding: '10px 16px', borderTop: '1px solid var(--glass-bd)', textAlign: 'right' }}>
                   <button type="submit" className="btn btn-primary">Start 1st Innings</button>
@@ -868,9 +1023,10 @@ export default function LiveScoring() {
   }
 
   return (
-    <div className="ls-root">
+    <div className="ls-root" onTouchStart={onTouchStartPull} onTouchMove={onTouchMovePull} onTouchEnd={onTouchEndPull}>
       <style>{css}</style>
       <div className="ls-shell">
+      {isPullRefreshing && <div className="ls-data-error"><span>Refreshing live data...</span></div>}
 
       <div className="ls-topbar">
         <button className="ls-back-btn" onClick={() => navigate('/admin')} aria-label="Back">‹</button>
@@ -930,20 +1086,20 @@ export default function LiveScoring() {
             <div className="ls-sec-lbl">Runs</div>
             <div className="ls-run-grid">
               {[0, 1, 2, 3, 4, 6].map(r => (
-                <button key={r} className={`ls-run-btn ls-r${r}`} onClick={() => submitBall({ runs_scored: r })}>{r}</button>
+                <button type="button" key={r} className={`ls-run-btn ls-r${r}`} onClick={() => submitBall({ runs_scored: r })}>{r}</button>
               ))}
             </div>
 
             <div className="ls-sec-lbl">Extras</div>
             <div className="ls-extras-grid">
-              <button className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'wide', extras_runs: 1 })}>Wide</button>
-              <button className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'noball', extras_runs: 1 })}>No Ball</button>
-              <button className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'bye', extras_runs: 1 })}>Bye</button>
-              <button className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'legbye', extras_runs: 1 })}>Leg Bye</button>
+              <button type="button" className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'wide', extras_runs: 1 })}>Wide</button>
+              <button type="button" className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'noball', extras_runs: 1 })}>No Ball</button>
+              <button type="button" className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'bye', extras_runs: 1 })}>Bye</button>
+              <button type="button" className="ls-ext-btn" onClick={() => submitBall({ runs_scored: 0, extras_type: 'legbye', extras_runs: 1 })}>Leg Bye</button>
             </div>
 
             <div className="ls-divider" />
-            <button className="ls-wicket-btn" onClick={() => setShowWicketModal(true)}>Wicket</button>
+            <button type="button" className="ls-wicket-btn" onClick={() => setShowWicketModal(true)}>Wicket</button>
           </div>
         </div>
 
@@ -1015,8 +1171,8 @@ export default function LiveScoring() {
       </div>
 
       <div className="ls-action-dock">
-        <button className="btn btn-secondary btn-sm" onClick={undoLastBall}>Undo Ball</button>
-        <button className="btn btn-danger btn-sm" onClick={endMatch}>End Match</button>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={undoLastBall}>Undo Score/Wicket</button>
+        <button type="button" className="btn btn-danger btn-sm" onClick={endMatch}>End Match</button>
       </div>
       </div>
 
@@ -1025,7 +1181,7 @@ export default function LiveScoring() {
           <div className="ls-modal" onClick={e => e.stopPropagation()}>
             <div className="ls-modal-head">
               <div className="ls-modal-title">Wicket Event</div>
-              <button className="ls-modal-x" onClick={() => setShowWicketModal(false)}>×</button>
+              <button type="button" className="ls-modal-x" onClick={() => setShowWicketModal(false)}>×</button>
             </div>
             <div className="ls-modal-body">
               <div>
@@ -1050,18 +1206,31 @@ export default function LiveScoring() {
               </div>
             </div>
             <div className="ls-modal-foot">
-              <button className="ls-btn-danger" onClick={handleWicketFlow}>Confirm Wicket</button>
+              <button type="button" className="ls-btn-danger" onClick={handleWicketFlow}>Confirm Wicket</button>
             </div>
           </div>
         </div>
       )}
 
       {showBowlerModal && (
-        <div className="ls-overlay" onClick={() => setShowBowlerModal(false)}>
+        <div
+          className="ls-overlay"
+          onClick={() => {
+            bowlerPromptRef.current.suppressedUntil = Date.now() + 10000
+            setShowBowlerModal(false)
+          }}
+        >
           <div className="ls-modal" onClick={e => e.stopPropagation()}>
             <div className="ls-modal-head">
               <div className="ls-modal-title">Select Bowler</div>
-              <button className="ls-modal-x" onClick={() => setShowBowlerModal(false)}>×</button>
+              <button
+                type="button"
+                className="ls-modal-x"
+                onClick={() => {
+                  bowlerPromptRef.current.suppressedUntil = Date.now() + 10000
+                  setShowBowlerModal(false)
+                }}
+              >×</button>
             </div>
             <div className="ls-modal-body">
               <div className="ls-modal-note">Only bowlers and all-rounders shown. Previous over bowler is excluded.</div>
@@ -1074,7 +1243,7 @@ export default function LiveScoring() {
               </div>
             </div>
             <div className="ls-modal-foot">
-              <button className="ls-btn-primary" onClick={setBowlerForOver}>Confirm Bowler</button>
+              <button type="button" className="ls-btn-primary" onClick={setBowlerForOver}>Confirm Bowler</button>
             </div>
           </div>
         </div>
@@ -1111,7 +1280,7 @@ export default function LiveScoring() {
               </div>
             </div>
             <div className="ls-modal-foot">
-              <button className="ls-btn-primary" onClick={initInnings}>Start Innings</button>
+              <button type="button" className="ls-btn-primary" onClick={initInnings}>Start Innings</button>
             </div>
           </div>
         </div>
