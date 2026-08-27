@@ -19,6 +19,10 @@ module.exports = async (req, res) => {
         .finally(() => originalEnd(...args));
       return res;
     };
+    if (req.url && !req.url.startsWith('/api')) {
+      req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+    }
+
     return app(req, res);
   } catch (error) {
     console.error('Serverless initialization failed:', error);
