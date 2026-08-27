@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas'
 import { downloadDataUrl, downloadFromUrl, handleBannerTap } from '../utils/media'
 
 const API = (() => {
-  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || '/api').replace(/\/$/, '')
   if (!raw.startsWith('http')) return raw
   return raw.endsWith('/api') ? raw : `${raw}/api`
 })()

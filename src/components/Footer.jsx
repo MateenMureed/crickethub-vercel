@@ -8,9 +8,15 @@ export default function Footer() {
             Professional Cricket League Management Platform
           </p>
         </div>
-        <p className="footer-text">
-          © {new Date().getFullYear()} CricketHub. All rights reserved.
-        </p>
+        <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+          <a href="/CricketHub-debug.apk" download="CricketHub.apk" style={{ color:'var(--accent)', fontSize:'.875rem', textDecoration:'none', fontWeight:600 }}>
+            📱 Download Android APK
+          </a>
+          <span style={{ opacity:0.3 }}>|</span>
+          <p className="footer-text">
+            © {new Date().getFullYear()} CricketHub. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   )

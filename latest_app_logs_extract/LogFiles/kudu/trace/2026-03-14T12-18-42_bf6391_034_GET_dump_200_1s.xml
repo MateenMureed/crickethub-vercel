@@ -1,4 +1,0 @@
-<step title="Incoming Request" date="2026-03-14T12:18:42.113" instance="bf6391" url="/dump" method="GET" type="request" pid="833,1,32" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="identity" Authorization="Bea..." x-ms-client-request-id="ecb93208-1f9f-11f1-a032-dcfb4820b033" X-ARR-LOG-ID="ecb93208-1f9f-11f1-a032-dcfb4820b033" CLIENT-IP="39.34.138.14:58000" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/dump" X-Client-IP="39.34.138.14" X-Client-Port="58000" >
-  <step title="Cleanup Xml Logs" date="2026-03-14T12:18:42.122" /><!-- duration: 21ms -->
-  <step title="Outgoing response" date="2026-03-14T12:18:42.918" type="response" statusCode="200" statusText="OK" /><!-- duration: 3ms -->
-</step><!-- duration: 811ms -->

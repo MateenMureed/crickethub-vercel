@@ -4,7 +4,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-    private const val BASE_URL = "https://cricket-android.azurewebsites.net/"
+    // Keep this in sync with VITE_ANDROID_BACKEND_URL when shipping an APK.
+    // This native offline helper is optional and is not used by the web UI.
+    private const val BASE_URL = "https://your-project.vercel.app/"
 
     val offlineApi: OfflineApi by lazy {
         Retrofit.Builder()

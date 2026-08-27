@@ -6,7 +6,7 @@ import {
 } from '../components/GraphicsGeneratorPanel'
 
 const API = (() => {
-  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+  const raw = (import.meta.env.VITE_ANDROID_BACKEND_URL || '/api').replace(/\/$/, '')
   if (!raw.startsWith('http')) return raw
   return raw.endsWith('/api') ? raw : `${raw}/api`
 })()

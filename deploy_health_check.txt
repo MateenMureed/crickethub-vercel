@@ -1,3 +1,0 @@
-STATE=Running
-HEALTH=ERR:The remote server returned an error: (503) Server Unavailable.
-ROOT=ERR:The remote server returned an error: (503) Server Unavailable.

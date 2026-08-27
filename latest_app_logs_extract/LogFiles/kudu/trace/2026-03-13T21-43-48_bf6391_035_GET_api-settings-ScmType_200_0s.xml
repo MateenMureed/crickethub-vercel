@@ -1,4 +1,0 @@
-<step title="Incoming Request" date="2026-03-13T21:43:48.450" instance="bf6391" url="/api/settings/ScmType" method="GET" type="request" pid="841,1,25" Host="crickethub.scm.azurewebsites.net" User-Agent="Azure-WebSites-Controller/107.0.7.33" Authorization="Bas..." x-ms-request-id="d9bddea0-62cd-4089-a40d-2f72a3e8e0bc" X-ARR-LOG-ID="d9bddea0-62cd-4089-a40d-2f72a3e8e0bc" CLIENT-IP="20.74.195.2:4673" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-MS-PLATFORM-INTERNAL="True" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/settings/ScmType" X-Client-IP="20.74.195.2" X-Client-Port="4673" >
-  <step title="Cleanup Xml Logs" date="2026-03-13T21:43:48.460" /><!-- duration: 48ms -->
-  <step title="Outgoing response" date="2026-03-13T21:43:48.559" type="response" statusCode="200" statusText="OK" /><!-- duration: 10ms -->
-</step><!-- duration: 130ms -->

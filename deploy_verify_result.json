@@ -1,6 +1,0 @@
-{
-    "show":  "{\r\n  \"defaultHostName\": \"crickethub.azurewebsites.net\",\r\n  \"httpsOnly\": false,\r\n  \"state\": \"Running\"\r\n}\r\n",
-    "deploy":  "",
-    "health":  "HEALTH_ERR: The remote server returned an error: (503) Server Unavailable.",
-    "root":  "ROOT_ERR: The remote server returned an error: (503) Server Unavailable."
-}

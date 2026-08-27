@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const backendUrl = env.VITE_ANDROID_BACKEND_URL || env.VITE_BACKEND_URL || 'https://cricket-android.azurewebsites.net';
+  const backendUrl = env.VITE_ANDROID_BACKEND_URL || env.VITE_BACKEND_URL || 'http://localhost:3001';
 
   return {
     plugins: [react()],

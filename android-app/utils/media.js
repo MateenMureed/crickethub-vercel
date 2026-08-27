@@ -1,7 +1,7 @@
-const BACKEND_RAW = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '');
+const BACKEND_RAW = (import.meta.env.VITE_ANDROID_BACKEND_URL || '/api').replace(/\/$/, '');
 const API_BASE = BACKEND_RAW.startsWith('http')
   ? (BACKEND_RAW.endsWith('/api') ? BACKEND_RAW : `${BACKEND_RAW}/api`)
-  : 'https://cricket-android.azurewebsites.net/api';
+  : '/api';
 const MEDIA_BASE = API_BASE.replace(/\/api$/, '');
 
 let bannerPreviewEl = null;

@@ -16,9 +16,8 @@
     "concurrently": "^9.1.2"
   },
   "dependencies": {
-    "@azure/cosmos": "^4.3.0",
-    "@azure/storage-blob": "^12.31.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "html2canvas": "^1.4.1",

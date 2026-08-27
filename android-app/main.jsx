@@ -8,10 +8,10 @@ import SplashScreen from './components/SplashScreen'
 import './index.css'
 import App from './App.jsx'
 
-const BACKEND_RAW = (import.meta.env.VITE_ANDROID_BACKEND_URL || 'https://cricket-android.azurewebsites.net/api').replace(/\/$/, '')
+const BACKEND_RAW = (import.meta.env.VITE_ANDROID_BACKEND_URL || '/api').replace(/\/$/, '')
 const API_BASE = BACKEND_RAW.startsWith('http')
   ? (BACKEND_RAW.endsWith('/api') ? BACKEND_RAW : `${BACKEND_RAW}/api`)
-  : 'https://cricket-android.azurewebsites.net/api'
+  : '/api'
 const MEDIA_BASE = API_BASE.replace(/\/api$/, '')
 const RESPONSE_CACHE_PREFIX = 'ch_api_cache_v2:'
 const RESPONSE_CACHE_INDEX_KEY = 'ch_api_cache_index_v2'

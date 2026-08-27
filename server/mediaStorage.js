@@ -1,25 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { APP_DATA_ROOT, REPO_ROOT, IS_AZURE } = require('./runtimePaths');
+const { v2: cloudinary } = require('cloudinary');
+const { APP_DATA_ROOT, REPO_ROOT, IS_VERCEL } = require('./runtimePaths');
 
-let BlobServiceClient = null;
-try {
-  ({ BlobServiceClient } = require('@azure/storage-blob'));
-} catch {
-  BlobServiceClient = null;
-}
-
-const LOCAL_ROOT = process.env.APP_MEDIA_ROOT || (IS_AZURE ? APP_DATA_ROOT : REPO_ROOT);
+const LOCAL_ROOT = process.env.APP_MEDIA_ROOT || (IS_VERCEL ? APP_DATA_ROOT : REPO_ROOT);
 const LOCAL_UPLOADS_DIR = path.join(LOCAL_ROOT, 'uploads');
 const LOCAL_MEDIA_DIR = path.join(LOCAL_ROOT, 'media');
 const FALLBACK_MEDIA_DIR = LOCAL_ROOT === REPO_ROOT ? null : path.join(REPO_ROOT, 'media');
 
-const AZURE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING || '';
-const AZURE_CONTAINER_NAME = process.env.AZURE_STORAGE_CONTAINER || 'crickethub-media';
-const FORCE_CLOUD = String(process.env.MEDIA_STORAGE_MODE || '').toLowerCase() === 'azure';
-const USE_AZURE = !!(BlobServiceClient && AZURE_CONNECTION_STRING && (FORCE_CLOUD || true));
-
-let containerClient = null;
+const USE_CLOUDINARY = Boolean(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+cloudinary.config({ cloud_name: process.env.CLOUDINARY_CLOUD_NAME, api_key: process.env.CLOUDINARY_API_KEY, api_secret: process.env.CLOUDINARY_API_SECRET, secure: true });
 
 function normalizeRelativePath(relativePath) {
   const cleaned = String(relativePath || '').replace(/\\/g, '/').replace(/^\/+/, '');
@@ -71,16 +61,8 @@ function extensionFromMime(mime) {
   return byMime[String(mime || '').toLowerCase()] || '.png';
 }
 
-async function streamToBuffer(readable) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-  }
-  return Buffer.concat(chunks);
-}
-
 async function init() {
-  if (!USE_AZURE) {
+  if (!USE_CLOUDINARY) {
     try {
       if (!fs.existsSync(LOCAL_UPLOADS_DIR)) fs.mkdirSync(LOCAL_UPLOADS_DIR, { recursive: true });
       if (!fs.existsSync(LOCAL_MEDIA_DIR)) fs.mkdirSync(LOCAL_MEDIA_DIR, { recursive: true });
@@ -90,23 +72,19 @@ async function init() {
     return;
   }
 
-  const blobService = BlobServiceClient.fromConnectionString(AZURE_CONNECTION_STRING);
-  containerClient = blobService.getContainerClient(AZURE_CONTAINER_NAME);
-  await containerClient.createIfNotExists();
 }
 
 async function writeBufferToPath(relativePath, buffer, contentType) {
   const normalized = normalizeRelativePath(relativePath);
   const finalContentType = contentTypeFromName(normalized, contentType);
 
-  if (USE_AZURE) {
-    const blob = containerClient.getBlockBlobClient(normalized);
-    await blob.uploadData(buffer, {
-      blobHTTPHeaders: {
-        blobContentType: finalContentType,
-      },
+  if (USE_CLOUDINARY) {
+    const publicId = normalized.replace(/\.[^.]+$/, '');
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream({ public_id: publicId, resource_type: 'image', overwrite: false }, (error, value) => error ? reject(error) : resolve(value));
+      stream.end(buffer);
     });
-    return `/${normalized}`;
+    return result.secure_url;
   }
 
   const absPath = ensureLocalParent(normalized);
@@ -147,18 +125,7 @@ async function saveDataUrl(dataUrl, relativeDir = 'uploads', originalName = 'ima
 async function readAsset(relativePath) {
   const normalized = normalizeRelativePath(relativePath);
 
-  if (USE_AZURE) {
-    const blob = containerClient.getBlobClient(normalized);
-    const exists = await blob.exists();
-    if (!exists) return null;
-
-    const downloaded = await blob.download();
-    const buffer = await streamToBuffer(downloaded.readableStreamBody);
-    return {
-      buffer,
-      contentType: downloaded.contentType || contentTypeFromName(normalized),
-    };
-  }
+  if (USE_CLOUDINARY) return null;
 
   const absPath = path.join(LOCAL_ROOT, normalized);
   if (fs.existsSync(absPath)) {
@@ -182,7 +149,7 @@ async function readAsset(relativePath) {
 }
 
 function isCloudEnabled() {
-  return USE_AZURE;
+  return USE_CLOUDINARY;
 }
 
 module.exports = {

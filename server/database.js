@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const azureStateStore = require('./azureStateStore');
+const stateStore = require('./vercelStateStore');
 const { APP_DATA_ROOT } = require('./runtimePaths');
 
 const DATA_ROOT = APP_DATA_ROOT;
@@ -121,7 +121,7 @@ function saveDB(data) {
 
   fs.renameSync(DB_TMP_FILE, DB_FILE);
   saveSnapshot(payload);
-  azureStateStore.queuePersist(normalized);
+  stateStore.queuePersist(normalized);
 }
 
 function nextId(data, table) {
@@ -131,7 +131,11 @@ function nextId(data, table) {
 
 const db = {
   async initStorage() {
-    await azureStateStore.hydrateLocalFile(DB_FILE, normalizeDB(defaultData));
+    await stateStore.hydrateLocalFile(DB_FILE, normalizeDB(defaultData));
+  },
+
+  flushStorage() {
+    return stateStore.flush();
   },
 
   resolveBowlerOptions(data, innings) {

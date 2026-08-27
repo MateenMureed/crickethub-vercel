@@ -85,6 +85,9 @@ export default function Navbar() {
 
           {/* ── Desktop right cluster ── */}
           <div className="navbar-right">
+            <a href="/CricketHub-debug.apk" download="CricketHub.apk" className="btn btn-sm" style={{ display:'flex', alignItems:'center', gap:4, background:'rgba(0,212,132,0.15)', color:'var(--accent)', border:'1px solid rgba(0,212,132,0.3)', textDecoration:'none', fontWeight:600 }} title="Download Android APK">
+              📱 APK
+            </a>
             <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
@@ -130,6 +133,10 @@ export default function Navbar() {
 
           {/* Auth + organizer */}
           <div className="mobile-menu-actions">
+            <a href="/CricketHub-debug.apk" download="CricketHub.apk" onClick={() => setMobileOpen(false)}
+              className="btn btn-primary" style={{ width:'100%', textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center', gap:6, textDecoration:'none' }}>
+              📱 Download Android APK
+            </a>
             <OrganizerLink mobile />
             {user ? (
               <button onClick={() => { logout(); setMobileOpen(false) }}
@@ -138,7 +145,7 @@ export default function Navbar() {
               </button>
             ) : (
               <Link to="/admin/login" onClick={() => setMobileOpen(false)}
-                className="btn btn-primary" style={{ width:'100%',textAlign:'center' }}>
+                className="btn btn-secondary" style={{ width:'100%',textAlign:'center' }}>
                 Login
               </Link>
             )}

@@ -31,7 +31,7 @@ const envOrigins = process.env.ALLOWED_ORIGINS
   : [];
 const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
-const allowedOriginPatterns = [/\.azurewebsites\.net$/i];
+const allowedOriginPatterns = [/\.vercel\.app$/i];
 
 function isAllowedOrigin(origin) {
   if (!origin || origin === 'null' || allowedOrigins.includes(origin)) return true;
@@ -499,7 +499,11 @@ async function startServer() {
     });
 }
 
-startServer().catch((error) => {
-  console.error('Failed to start server:', error.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  startServer().catch((error) => {
+    console.error('Failed to start server:', error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { app, db, mediaStorage };

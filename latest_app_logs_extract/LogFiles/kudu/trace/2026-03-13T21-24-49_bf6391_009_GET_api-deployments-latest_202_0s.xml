@@ -1,9 +1,0 @@
-<step title="Incoming Request" date="2026-03-13T21:24:49.578" instance="bf6391" url="/api/deployments/latest" method="GET" type="request" pid="833,1,18" Accept="*/*" Host="crickethub.scm.azurewebsites.net" User-Agent="AZURECLI/2.83.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bea..." x-ms-client-request-id="dc82103f-1f22-11f1-bd84-f8b46a87ac1a" X-ARR-LOG-ID="dc82103f-1f22-11f1-bd84-f8b46a87ac1a" CLIENT-IP="39.34.138.14:58023" X-SITE-DEPLOYMENT-ID="crickethub" WAS-DEFAULT-HOSTNAME="crickethub.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/deployments/latest" X-Client-IP="39.34.138.14" X-Client-Port="58023" >
-  <step title="Cleanup Xml Logs" date="2026-03-13T21:24:49.581" /><!-- duration: 7ms -->
-  <step title="DeploymentService.GetResult" date="2026-03-13T21:24:49.625" >
-    <step title="DeploymentService.GetLatestDeployment" date="2026-03-13T21:24:49.630" >
-      <step title="DeploymentManager.GetResults" date="2026-03-13T21:24:49.634" /><!-- duration: 242ms -->
-    </step><!-- duration: 254ms -->
-  </step><!-- duration: 266ms -->
-  <step title="Outgoing response" date="2026-03-13T21:24:49.911" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 4ms -->
-</step><!-- duration: 352ms -->
